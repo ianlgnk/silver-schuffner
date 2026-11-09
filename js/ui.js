@@ -153,7 +153,7 @@
     const target = hash === "#inicio" ? document.body : document.querySelector(hash);
     if (!target) return;
     const offset = hash === "#inicio" ? 0 : -topbar.offsetHeight + 1;
-    if (lenis) lenis.scrollTo(target, { offset, duration: 1.4 });
+    if (lenis) lenis.scrollTo(target, { offset, duration: 1.0 });
     else if (hash === "#inicio") window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
     else target.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
     history.replaceState(null, "", hash);

@@ -145,3 +145,19 @@ test("abrir diálogo não muda a largura da tela (senão a View Transition é ab
   // Com barra de rolagem fixa (Windows), overflow: hidden tirava a barra, mudava a largura e o Chrome abortava a transição.
   assert.match(css("base.css"), /html \{[^}]*scrollbar-gutter: stable/);
 });
+
+test("foto da peça começa a voar no toque (curva de gaveta)", () => {
+  assert.match(css("tokens.css"), /--ease-drawer: cubic-bezier\(0\.32, 0\.72, 0, 1\);/);
+  assert.match(css("catalog.css"), /::view-transition-group\(piece-photo\) \{ animation-duration: 460ms; animation-timing-function: var\(--ease-drawer\); \}/);
+});
+
+test("movimento reduzido mantém os fades curtos do catálogo", () => {
+  const src = js("catalog.js");
+  assert.doesNotMatch(src, /reduced\(\) \|\| !img\.animate/);
+  assert.match(src, /if \(!img\.animate\) return swap\(\);/);
+  assert.match(src, /if \(reduced\(\)\) return void transition\(applyFilter\);/);
+});
+
+test("rolagem dos links do menu no computador dura 1 s", () => {
+  assert.match(js("ui.js"), /lenis\.scrollTo\(target, \{ offset, duration: 1\.0 \}\)/);
+});

@@ -52,7 +52,7 @@ html.reveals .grid.is-settled .item { opacity: 1; transform: none; transition: n
 .vt-filter .topbar { view-transition-name: topbar; }
 .vt-filter .wa-float { view-transition-name: wa-float; }
 ::view-transition-group(*) { animation-duration: 380ms; animation-timing-function: var(--ease-in-out); }
-::view-transition-group(piece-photo) { animation-duration: 460ms; }
+::view-transition-group(piece-photo) { animation-duration: 460ms; animation-timing-function: var(--ease-drawer); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 280ms; }
 
 /* ---------- Detalhe da peça ---------- */

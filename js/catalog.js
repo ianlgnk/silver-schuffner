@@ -59,7 +59,9 @@
   function setFilter(type) {
     if (type === filter || !(type === "todos" || TYPES[type])) return;
     filter = type;
-    if (!canTransition()) return applyFilter();
+    if (typeof document.startViewTransition !== "function") return applyFilter();
+    // Movimento reduzido: só um fade da página; sem nomes, nenhuma peça voa.
+    if (reduced()) return void transition(applyFilter);
     const root = document.documentElement;
     const run = ++filterRun;
     root.classList.add("vt-filter");
@@ -184,7 +186,7 @@
       img.alt = `${p.n}, variação ${th.dataset.variant}`;
     };
     dialog.querySelectorAll(".thumb").forEach(x => x.setAttribute("aria-pressed", String(x === th)));
-    if (reduced() || !img.animate) return swap();
+    if (!img.animate) return swap(); // só opacidade: vale também com movimento reduzido
     // Interrompível: um toque novo parte da opacidade atual e só a última troca vale.
     const from = getComputedStyle(img).opacity;
     img.getAnimations().forEach(a => a.cancel());
