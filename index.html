@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Silver Schuffner · Joias &amp; Gemas</title>
+<meta name="description" content="Anéis, brincos e colares feitos no ateliê, com a pedra e o tamanho que você escolher.">
+<meta name="theme-color" content="#0c0b0a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Silver Schuffner · Joias &amp; Gemas">
+<meta property="og:description" content="Anéis, brincos e colares feitos no ateliê, com a pedra e o tamanho que você escolher.">
+<meta property="og:image" content="media/hero-poster-landscape.jpg">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<script src="js/lib.js"></script>
+<script>
+  /* Decide a abertura antes da primeira pintura: a página já nasce preta quando a Faísca vai tocar. */
+  (function () {
+    var d = document.documentElement, store = null, mode = "none";
+    d.classList.add("js");
+    try { store = window.localStorage; } catch (e) {}
+    try {
+      mode = SS.lib.introMode({
+        reduced: matchMedia("(prefers-reduced-motion: reduce)").matches,
+        hasHash: location.hash.length > 1,
+        seenAt: SS.lib.readSeen(store),
+        now: Date.now()
+      });
+    } catch (e) {}
+    d.setAttribute("data-intro", mode);
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/catalog.css">
+<link rel="stylesheet" href="css/sections.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.4-.3Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M4 9h16M4 15h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topbar" id="topo">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#inicio" aria-label="Silver Schuffner Joias e Gemas, voltar ao início">
+      <img src="img/logo-alpha-sm.png" alt="" width="300" height="198">
+    </a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#historia">História</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#depoimentos">Depoimentos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <button class="btn btn-sm topbar-wa" type="button" data-wa="geral">
+      <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span>
+    </button>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">
+      <span>Menu</span><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+    </button>
+  </div>
+</header>
+
+<dialog class="menu" id="menu" aria-label="Menu" data-lenis-prevent>
+  <div class="menu-in">
+    <div class="menu-top">
+      <img src="img/logo-alpha-sm.png" alt="" width="300" height="198">
+      <button class="icon-btn" type="button" data-close-menu aria-label="Fechar menu"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <nav class="menu-nav" aria-label="Seções">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#historia">História</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#depoimentos">Depoimentos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <button class="btn btn-lg menu-wa" type="button" data-wa="geral">
+      <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp
+    </button>
+  </div>
+</dialog>
+
+<main id="conteudo">
+
+  <section class="hero" id="inicio" aria-labelledby="hero-title">
+    <div class="hero-media" aria-hidden="true">
+      <picture>
+        <source media="(orientation: portrait)" srcset="media/hero-poster-portrait.jpg">
+        <img class="hero-poster" src="media/hero-poster-landscape.jpg" alt="" fetchpriority="high" decoding="async">
+      </picture>
+      <video class="hero-video" muted playsinline loop preload="none" disablepictureinpicture></video>
+    </div>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="intro" aria-hidden="true">
+      <canvas class="intro-canvas"></canvas>
+      <div class="intro-logo"><img src="img/logo-alpha.png" alt="" width="618" height="408" decoding="async"><span class="intro-sweep"></span></div>
+    </div>
+    <div class="wrap hero-copy">
+      <h1 class="display" id="hero-title"><span class="ln"><span>Joias com a</span></span> <span class="ln"><span><em>sua pedra</em></span></span></h1>
+      <p class="hero-lede">Anéis, brincos e colares feitos no ateliê, com a pedra e o tamanho que você escolher.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#catalogo">Ver as peças<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <button class="btn btn-ghost" type="button" data-wa="geral"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</button>
+      </div>
+    </div>
+    <div class="hero-end" id="hero-end" aria-hidden="true"></div>
+  </section>
+
+  <section class="section catalog" id="catalogo" aria-labelledby="catalogo-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="catalogo-title"><span class="ln"><span>Uma seleção</span></span> <span class="ln"><span>de <em>modelos</em></span></span></h2>
+        <p class="lede">Toque numa peça para ver o peso, as pedras e as cores disponíveis.</p>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filtrar por tipo"></div>
+      <div class="grid" id="grid"></div>
+      <p class="fine">Imagens ilustrativas dos modelos. Peso sujeito à variação de acordo com o tamanho do aro.</p>
+    </div>
+  </section>
+
+  <section class="section story" id="historia" aria-labelledby="historia-title">
+    <div class="wrap story-grid">
+      <figure class="story-figure">
+        <img class="story-photo" src="img/hero/hero-4-1600.jpg" srcset="img/hero/hero-4-800.jpg 800w, img/hero/hero-4-1600.jpg 1600w" sizes="(min-width: 900px) 45vw, 100vw" alt="Modelo usando colares, anéis e bracelete dourados" width="1600" height="1280" loading="lazy" decoding="async">
+        <figcaption class="story-slot"><span>Foto do ateliê</span><span class="tag">Em breve</span></figcaption>
+      </figure>
+      <div class="story-text">
+        <h2 class="h2" id="historia-title"><span class="ln"><span>Nossa <em>história</em></span></span></h2>
+        <p class="lede">Esta parte vai contar a trajetória do ateliê com as palavras de quem faz as peças.</p>
+        <ol class="chapters">
+          <li class="chapter"><h3 class="h3">Como tudo começou</h3><p>Quando e como o ateliê começou na ourivesaria.</p><span class="tag">Em breve</span></li>
+          <li class="chapter"><h3 class="h3">O ateliê hoje</h3><p>Onde fica, que peças mais faz e em quais feiras encontrar.</p><span class="tag">Em breve</span></li>
+          <li class="chapter"><h3 class="h3">Nosso jeito de trabalhar</h3><p>O cuidado na escolha das pedras, no acabamento e no atendimento.</p><span class="tag">Em breve</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section services" id="servicos" aria-labelledby="servicos-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="servicos-title"><span class="ln"><span>O que o ateliê</span></span> <span class="ln"><span><em>faz por você</em></span></span></h2>
+        <p class="lede">Os serviços abaixo mostram o formato. A lista definitiva vem do ateliê.</p>
+      </div>
+      <ul class="svc-list">
+        <li class="svc">
+          <div class="svc-name"><h3 class="h3">Peças sob encomenda</h3><span class="tag">Exemplo</span></div>
+          <p>Escolha um modelo do catálogo e o ateliê produz com a cor de pedra e o tamanho de aro que você quiser.</p>
+          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Peças sob encomenda">Pedir orçamento</button>
+        </li>
+        <li class="svc">
+          <div class="svc-name"><h3 class="h3">Conserto e restauração</h3><span class="tag">Exemplo</span></div>
+          <p>Solda, troca de pedra, polimento e limpeza para a joia voltar a brilhar.</p>
+          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Conserto e restauração">Pedir orçamento</button>
+        </li>
+        <li class="svc">
+          <div class="svc-name"><h3 class="h3">Ajuste de tamanho</h3><span class="tag">Exemplo</span></div>
+          <p>Aumentar ou diminuir o aro de anéis e alianças.</p>
+          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Ajuste de tamanho">Pedir orçamento</button>
+        </li>
+        <li class="svc">
+          <div class="svc-name"><h3 class="h3">Personalização</h3><span class="tag">Exemplo</span></div>
+          <p>Gravação de nomes e datas e peças pensadas para presentes e datas especiais.</p>
+          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Personalização">Pedir orçamento</button>
+        </li>
+      </ul>
+
+      <div class="process">
+        <div class="process-head"><h3 class="h3">Como funciona uma encomenda</h3><span class="tag">Exemplo</span></div>
+        <ol class="steps">
+          <li class="step"><span class="step-n" aria-hidden="true">1</span><h4>Escolha</h4><p>Você escolhe um modelo no catálogo e anota o código.</p></li>
+          <li class="step"><span class="step-n" aria-hidden="true">2</span><h4>Conversa</h4><p>No WhatsApp, vocês combinam a cor da pedra e o tamanho do aro.</p></li>
+          <li class="step"><span class="step-n" aria-hidden="true">3</span><h4>Produção</h4><p>A peça é produzida no ateliê.</p></li>
+          <li class="step"><span class="step-n" aria-hidden="true">4</span><h4>Entrega</h4><p>Você recebe a joia pronta para usar.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section quotes" id="depoimentos" aria-labelledby="depoimentos-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="depoimentos-title"><span class="ln"><span>O que dizem <em>de nós</em></span></span></h2>
+        <p class="lede">Os relatos e os prints de clientes entram aqui.</p>
+      </div>
+      <ul class="quote-list">
+        <li class="quote"><span class="qmark" aria-hidden="true">“</span><p>Espaço para o depoimento ou o print de um cliente.</p><span class="tag">Em breve</span></li>
+        <li class="quote"><span class="qmark" aria-hidden="true">“</span><p>Espaço para o depoimento ou o print de um cliente.</p><span class="tag">Em breve</span></li>
+        <li class="quote"><span class="qmark" aria-hidden="true">“</span><p>Espaço para o depoimento ou o print de um cliente.</p><span class="tag">Em breve</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section contact" id="contato" aria-labelledby="contato-title">
+    <div class="wrap">
+      <h2 class="display-2" id="contato-title"><span class="ln"><span>Gostou de</span></span> <span class="ln"><span>alguma <em>peça?</em></span></span></h2>
+      <p class="lede">Chame o ateliê no WhatsApp e combine o modelo, a cor da pedra e o tamanho.</p>
+      <button class="btn btn-lg" type="button" data-wa="geral"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</button>
+      <dl class="contact-list">
+        <div class="contact-item"><dt>WhatsApp</dt><dd id="c-whatsapp" class="pending">Número do ateliê em breve</dd></div>
+        <div class="contact-item"><dt>Instagram</dt><dd id="c-instagram" class="pending">Perfil do ateliê em breve</dd></div>
+        <div class="contact-item"><dt>Feiras</dt><dd class="pending">Feiras e horários em breve</dd></div>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <img class="footer-logo" src="img/logo-alpha-sm.png" alt="Silver Schuffner Jóias &amp; Gemas" width="300" height="198" loading="lazy">
+    <div class="footer-notes">
+      <a class="credit" href="https://wa.me/5533988429751?text=Oi%2C%20Ian!%20Vi%20o%20site%20da%20Silver%20Schuffner%20e%20quero%20um%20site%20tamb%C3%A9m." target="_blank" rel="noopener">Site por Ian LGNK Consultoria</a>
+      <small>Fotos de modelos: Saeed Anahid, Divaris Shirichena, Dash Khatami e Segal Jewelry, via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>. Vídeo: <a href="https://coverr.co" target="_blank" rel="noopener">Coverr</a>.</small>
+    </div>
+  </div>
+</footer>
+
+<button class="wa-float" type="button" data-wa="geral" aria-label="Falar no WhatsApp do ateliê"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog class="piece" id="piece" aria-labelledby="piece-title" data-lenis-prevent></dialog>
+
+<script src="js/config.js" defer></script>
+<script src="js/data.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/catalog.js" defer></script>
+<script src="js/intro.js" defer></script>
+</body>
+</html>

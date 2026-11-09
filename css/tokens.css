@@ -1,0 +1,30 @@
+/* Ônix e champanhe: base preta e prata como o logo; champanhe só onde a pessoa age. */
+:root {
+  --bg: #0c0b0a;
+  --bg-raise: #12110f;
+  --surface: #171513;
+  --fg: #f3f0ea;
+  --fg-soft: rgba(243, 240, 234, 0.86);
+  --muted: #a8a299;
+  --silver: #c9cacf;
+  --silver-dim: rgba(201, 202, 207, 0.42);
+  --champagne: #d8c6a4;
+  --champagne-hi: #e6d8bd;
+  --champagne-ink: #14110c;
+  --line: rgba(243, 240, 234, 0.12);
+  --line-strong: rgba(243, 240, 234, 0.34);
+  --plate: radial-gradient(120% 90% at 50% 32%, #f3efe8 0%, #c9c2b6 60%, #5f5a52 100%);
+
+  --font-display: "EB Garamond", Garamond, "Times New Roman", serif;
+  --font-body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --gutter: clamp(20px, 5vw, 64px);
+  --maxw: 1240px;
+  --section-y: clamp(88px, 13vw, 168px);
+  --topbar-h: 64px;
+
+  color-scheme: dark;
+}
