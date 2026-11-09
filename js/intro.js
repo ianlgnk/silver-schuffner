@@ -71,7 +71,7 @@
       SKIP.forEach(ev => window.removeEventListener(ev, leave, { passive: true }));
       ready();
       intro.classList.add("is-fading");
-      setTimeout(() => intro.remove(), 650);
+      setTimeout(() => intro.remove(), 450);
     };
     SKIP.forEach(ev => window.addEventListener(ev, leave, { passive: true }));
     media.start();

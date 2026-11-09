@@ -51,8 +51,8 @@
 .intro { display: none; position: absolute; inset: 0; z-index: 3; background: #000; pointer-events: none; }
 html[data-intro="full"] .intro, html[data-intro="calm"] .intro { display: block; }
 .intro.is-drawing { background: transparent; }
-.intro.is-leaving { opacity: 0; transition: opacity 200ms ease; }
-.intro.is-fading { opacity: 0; transition: opacity 600ms ease; }
+.intro.is-leaving { opacity: 0; transition: opacity 200ms var(--ease-out); }
+.intro.is-fading { opacity: 0; transition: opacity 400ms var(--ease-out); }
 .intro-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .intro-logo {
   --lw: min(78vw, 520px, 62svh);
@@ -60,16 +60,22 @@ html[data-intro="full"] .intro, html[data-intro="calm"] .intro { display: block;
   opacity: 0; transform: translate(-50%, 10px);
 }
 .intro-logo img { width: 100%; height: auto; }
+/* Brilho que atravessa o logo: a faixa (3× a largura) desliza por transform dentro da máscara do logo,
+ * sem repintar a cada quadro enquanto o canvas da abertura desenha. */
 .intro-sweep {
-  position: absolute; inset: 0;
-  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.95) 50%, transparent 62%) no-repeat;
-  background-size: 300% 100%; background-position: 100% 0;
+  position: absolute; inset: 0; overflow: hidden;
   -webkit-mask: url("../img/logo-alpha.png") center / 100% 100% no-repeat; mask: url("../img/logo-alpha.png") center / 100% 100% no-repeat;
   opacity: 0;
 }
+.intro-sweep::before {
+  content: ""; position: absolute; top: 0; left: 0; width: 300%; height: 100%;
+  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.95) 50%, transparent 62%);
+  transform: translateX(-66.667%);
+}
 .intro.logo-on .intro-logo { opacity: 1; transform: translate(-50%, 0); transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out); }
-.intro.logo-on .intro-sweep { opacity: 0.9; background-position: 0 0; transition: background-position 1100ms var(--ease-in-out) 250ms, opacity 200ms ease 250ms; }
-.intro.logo-off .intro-logo { opacity: 0; transform: translate(-50%, -8px) scale(0.98); transition: opacity 350ms ease, transform 350ms var(--ease-out); }
+.intro.logo-on .intro-sweep { opacity: 0.9; transition: opacity 200ms var(--ease-out) 250ms; }
+.intro.logo-on .intro-sweep::before { transform: translateX(0); transition: transform 1100ms var(--ease-in-out) 250ms; }
+.intro.logo-off .intro-logo { opacity: 0; transform: translate(-50%, -8px) scale(0.98); transition: opacity 350ms var(--ease-out), transform 350ms var(--ease-out); }
 
 /* Texto e topo esperam a abertura; sem JS, ficam visíveis. */
 .hero .ln { overflow: hidden; padding: 0 0.12em 0.1em 0; margin-bottom: -0.1em; }
@@ -80,7 +86,7 @@ html.intro-done .hero .ln > span { transform: none; transition: transform 900ms 
 html.intro-done .hero .ln:nth-child(2) > span { transition-delay: 90ms; }
 html.intro-done .hero-lede, html.intro-done .hero-actions { opacity: 1; transform: none; transition: opacity 700ms var(--ease-out) 350ms, transform 800ms var(--ease-out) 350ms; }
 html.intro-done .hero-actions { transition-delay: 450ms; }
-html.js .topbar { transition: opacity 600ms ease; }
+html.js .topbar { transition: opacity 400ms var(--ease-out); }
 html[data-intro="full"]:not(.intro-done) .topbar, html[data-intro="calm"]:not(.intro-done) .topbar { opacity: 0; pointer-events: none; }
 
 /* Rede de segurança: se o script nem rodar, nada fica preso no escuro. */

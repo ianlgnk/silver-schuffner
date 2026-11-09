@@ -9,17 +9,19 @@
   const REVEAL = ".section .h2, .section .display-2, .section-head .lede, .story-text .lede, .contact .lede, .contact .btn-lg, .filters, .fine, .process-head, .svc, .chapter, .step, .quote, .contact-item, .item, .story-figure";
   // Depois de todos os scripts (as peças do catálogo são criadas pelo catalog.js).
   document.addEventListener("DOMContentLoaded", () => {
+    const GROUPS = ".svc-list, .chapters, .steps, .quote-list, .contact-list, .grid";
     const io = new IntersectionObserver(entries => {
+      // Cascata pela ordem de chegada: quem entra junto (uma linha da grade, uma lista)
+      // sai com 70 ms entre si, seja qual for o número de colunas.
+      let k = 0;
       entries.forEach(en => {
         if (!en.isIntersecting) return;
-        en.target.classList.add("is-in");
-        io.unobserve(en.target);
+        const el = en.target;
+        if (el.parentElement && el.parentElement.matches(GROUPS)) el.style.transitionDelay = `${Math.min(k++, 3) * 70}ms`;
+        el.classList.add("is-in");
+        io.unobserve(el);
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.15 });
-    // Cascata: irmãos do mesmo grupo entram com 70 ms entre si (até 4 por linha).
-    document.querySelectorAll(".svc-list, .chapters, .steps, .quote-list, .contact-list, .grid").forEach(group => {
-      [...group.children].forEach((el, i) => { el.style.transitionDelay = `${(i % 4) * 70}ms`; });
-    });
     document.querySelectorAll(REVEAL).forEach(el => io.observe(el));
   });
 })();
@@ -41,7 +43,13 @@
     // Um diálogo modal fica na camada superior e torna o resto inerte:
     // o aviso precisa morar dentro dele para ser visto e anunciado.
     const host = document.querySelector("dialog[open]") || document.body;
-    if (toastEl.parentNode !== host) host.append(toastEl);
+    if (toastEl.parentNode !== host) {
+      // Um nó movido nasce sem estilo anterior e a transição de entrada não roda;
+      // ler o layout depois de mover fixa o estado escondido como ponto de partida.
+      toastEl.classList.remove("is-on");
+      host.append(toastEl);
+      void toastEl.offsetWidth;
+    }
     toastEl.innerHTML = html;
     toastEl.classList.add("is-on");
     clearTimeout(toastTimer);

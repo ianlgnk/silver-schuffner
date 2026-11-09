@@ -1,6 +1,8 @@
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--topbar-h); scrollbar-color: #3a3631 var(--bg); }
+/* scrollbar-gutter: com barra de rolagem fixa, abrir um diálogo (overflow: hidden) não muda a largura da tela;
+ * se mudasse, a página pularia e o Chrome abortaria a View Transition da peça. */
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--topbar-h); scrollbar-color: #3a3631 var(--bg); scrollbar-gutter: stable; }
 body {
   margin: 0;
   background: var(--bg);
@@ -30,7 +32,7 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
 .skip {
   position: fixed; z-index: 100; left: 16px; top: 12px;
   background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-weight: 500;
-  transform: translateY(-160%); transition: transform 200ms var(--ease-out);
+  transform: translateY(-160%); /* só o teclado chega aqui: aparece na hora, sem animação */
 }
 .skip:focus-visible { transform: none; }
 
@@ -61,14 +63,15 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
   font-size: 15px; font-weight: 600; letter-spacing: 0.01em; text-decoration: none; white-space: nowrap;
   transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 160ms var(--ease-out);
 }
-.btn:active { transform: scale(0.97); }
+/* Resposta ao apertar, em tudo que é tocável. */
+:is(.btn, .filter, .icon-btn, .menu-btn, .thumb):active { transform: scale(0.97); }
 .btn-ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
 .btn-sm { min-height: 44px; padding: 0 18px; font-size: 14px; }
 .btn-lg { min-height: 56px; padding: 0 30px; font-size: 16px; }
 .icon-btn {
   display: grid; place-items: center; width: 48px; height: 48px; border-radius: 999px;
   background: transparent; border: 1px solid var(--line-strong);
-  transition: border-color 200ms ease;
+  transition: border-color 200ms ease, transform 160ms var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .btn:hover { background: var(--champagne-hi); }
@@ -99,6 +102,7 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px 0 16px;
   background: transparent; border: 1px solid var(--line-strong); border-radius: 999px;
   font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+  transition: transform 160ms var(--ease-out);
 }
 
 @media (min-width: 900px) {
@@ -142,13 +146,14 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
   padding: 12px 0; border-bottom: 1px solid var(--line);
 }
 .menu-wa { margin-top: auto; width: 100%; }
-.menu[open] .menu-in { animation: menu-in 320ms var(--ease-out); }
+/* O diálogo inteiro (fundo incluído) entra em fade; antes só o miolo animava e a página sumia num corte seco. */
+.menu[open], .menu[open]::backdrop { animation: fade-in 250ms var(--ease-out); }
 .menu[open] .menu-nav a { animation: menu-link 420ms var(--ease-out) both; }
 .menu[open] .menu-nav a:nth-child(2) { animation-delay: 40ms; }
 .menu[open] .menu-nav a:nth-child(3) { animation-delay: 80ms; }
 .menu[open] .menu-nav a:nth-child(4) { animation-delay: 120ms; }
 .menu[open] .menu-nav a:nth-child(5) { animation-delay: 160ms; }
-@keyframes menu-in { from { opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
 @keyframes menu-link { from { opacity: 0; transform: translateY(10px); } }
 
 /* ---------- Seções ---------- */
@@ -184,6 +189,7 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
 }
 .wa-float .icon { width: 24px; height: 24px; }
 .wa-float.is-on { opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition-delay: 0s; }
+.wa-float.is-on:active { transform: scale(0.95); transition-duration: 160ms; }
 @media (min-width: 900px) { .wa-float { display: none; } }
 
 /* ---------- Aviso (toast) ---------- */
@@ -199,8 +205,8 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
 .toast b { font-weight: 600; }
 
 @media (prefers-reduced-motion: reduce) {
-  .menu[open] .menu-in, .menu[open] .menu-nav a { animation-duration: 1ms; }
-  .btn:active { transform: none; }
+  .menu[open] .menu-nav a { animation: none; } /* o menu ainda entra em fade, sem os links subirem */
+  :is(.btn, .filter, .icon-btn, .menu-btn, .thumb):active, .wa-float.is-on:active { transform: none; }
   .wa-float, .toast { transition-property: opacity, visibility; }
   .wa-float { transform: none; }
   .toast { transform: translate(-50%, 0); }

@@ -102,3 +102,46 @@ test("abertura sem memória de visita (logo toda vez)", () => {
   assert.match(js("intro.js"), /calm/);
   assert.match(css("hero.css"), /html\[data-intro="calm"\] \.intro/);
 });
+
+/* ---------- Revisão das animações ---------- */
+const rule = (file, selector) => {
+  const src = css(file);
+  const i = src.indexOf(selector + " {");
+  assert.ok(i >= 0, `falta a regra ${selector} em ${file}`);
+  return src.slice(i, src.indexOf("}", i));
+};
+
+test("peças só ganham nome de transição durante a troca de filtro", () => {
+  // Nomeadas o tempo todo, as 23 peças eram capturadas na abertura da peça e pintavam por cima do diálogo.
+  assert.doesNotMatch(js("catalog.js"), /style="view-transition-name/);
+});
+
+test("filtro mostra as peças na hora, sem esperar a entrada da rolagem", () => {
+  assert.match(css("catalog.css"), /\.grid\.is-settled \.item \{[^}]*opacity: 1[^}]*transition: none/);
+  assert.match(js("catalog.js"), /classList\.add\("is-settled"\)/);
+});
+
+test("link de pular conteúdo (teclado) aparece sem animação", () => {
+  assert.doesNotMatch(rule("base.css", ".skip"), /transition/);
+});
+
+test("brilho do logo anda por transform, não por background-position", () => {
+  assert.doesNotMatch(css("hero.css"), /background-position/);
+  assert.match(css("hero.css"), /\.intro\.logo-on \.intro-sweep::before \{[^}]*transition: transform/);
+});
+
+test("menu e fundo do diálogo entram em fade, sem corte seco", () => {
+  assert.match(css("base.css"), /\.menu\[open\], \.menu\[open\]::backdrop \{ animation: fade-in/);
+  // Transição (não animation): tirar .no-enter depois da View Transition não pode reiniciar o fade.
+  assert.match(css("catalog.css"), /\.piece\[open\]::backdrop \{[^}]*transition: opacity/);
+  assert.match(css("catalog.css"), /@starting-style \{ \.piece\[open\]::backdrop \{ opacity: 0/);
+});
+
+test("botões de toque têm resposta ao apertar", () => {
+  assert.match(css("base.css"), /:is\(\.btn, \.filter, \.icon-btn, \.menu-btn, \.thumb\):active \{ transform: scale\(0\.97\)/);
+});
+
+test("abrir diálogo não muda a largura da tela (senão a View Transition é abortada)", () => {
+  // Com barra de rolagem fixa (Windows), overflow: hidden tirava a barra, mudava a largura e o Chrome abortava a transição.
+  assert.match(css("base.css"), /html \{[^}]*scrollbar-gutter: stable/);
+});

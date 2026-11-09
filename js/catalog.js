@@ -32,7 +32,7 @@
 
   /* ---------- Grade ---------- */
   grid.innerHTML = PIECES.map(p => `
-    <button type="button" class="item" data-code="${p.c}" data-type="${p.t}" style="view-transition-name: p-${p.c}" aria-label="${p.n}, código ${p.c}">
+    <button type="button" class="item" data-code="${p.c}" data-type="${p.t}" aria-label="${p.n}, código ${p.c}">
       <span class="plate">
         <img src="${pieceImage(p, p.h)}" alt="" loading="lazy" decoding="async">
         ${p.v > 1 ? `<span class="chip">${p.v} cores</span>` : ""}
@@ -46,14 +46,29 @@
   function applyFilter() {
     filtersEl.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.filter === filter)));
     grid.querySelectorAll(".item").forEach(el => { el.hidden = filter !== "todos" && el.dataset.type !== filter; });
+    // Depois do primeiro filtro, as peças ficam visíveis de vez: a troca já tem a sua animação,
+    // e peças que a rolagem ainda não tinha revelado não podem chegar invisíveis.
+    grid.classList.add("is-settled");
   }
+  // Nome de transição só durante a troca de filtro. Nomeadas o tempo todo, as peças eram
+  // capturadas também na abertura da peça e pintavam por cima do diálogo.
+  const nameItems = on => grid.querySelectorAll(".item").forEach(el => {
+    el.style.viewTransitionName = on ? `p-${el.dataset.code}` : "";
+  });
+  let filterRun = 0;
   function setFilter(type) {
     if (type === filter || !(type === "todos" || TYPES[type])) return;
     filter = type;
     if (!canTransition()) return applyFilter();
     const root = document.documentElement;
+    const run = ++filterRun;
     root.classList.add("vt-filter");
-    transition(applyFilter).finished.catch(() => {}).then(() => root.classList.remove("vt-filter"));
+    nameItems(true);
+    transition(applyFilter).finished.catch(() => {}).then(() => {
+      if (run !== filterRun) return; // cliques rápidos: quem limpa é a troca mais nova
+      root.classList.remove("vt-filter");
+      nameItems(false);
+    });
   }
   filtersEl.addEventListener("click", e => {
     const b = e.target.closest("[data-filter]");
@@ -170,10 +185,13 @@
     };
     dialog.querySelectorAll(".thumb").forEach(x => x.setAttribute("aria-pressed", String(x === th)));
     if (reduced() || !img.animate) return swap();
-    img.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: "ease-out", fill: "forwards" }).finished.then(() => {
+    // Interrompível: um toque novo parte da opacidade atual e só a última troca vale.
+    const from = getComputedStyle(img).opacity;
+    img.getAnimations().forEach(a => a.cancel());
+    img.animate([{ opacity: from }, { opacity: 0 }], { duration: 90, easing: "ease-out", fill: "forwards" }).finished.then(() => {
       swap();
       img.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "ease-out", fill: "forwards" });
-    }, () => {}); // cancelada (detalhe fechado no meio): nada a fazer
+    }, () => {}); // cancelada (outro toque ou detalhe fechado no meio): nada a fazer
   });
 
   SS.catalog = { open, close, setFilter };
