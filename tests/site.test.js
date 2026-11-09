@@ -94,3 +94,11 @@ test("topo e botão fixo ficam acima das peças na troca de filtro", () => {
   assert.match(css("catalog.css"), /\.vt-filter \.topbar \{[^}]*view-transition-name: topbar/);
   assert.match(js("catalog.js"), /classList\.add\("vt-filter"\)/);
 });
+
+test("abertura sem memória de visita (logo toda vez)", () => {
+  const head = html.slice(0, html.indexOf("</head>"));
+  assert.doesNotMatch(head, /localStorage|readSeen|seenAt/);
+  assert.doesNotMatch(js("intro.js"), /markSeen|localStorage|short/);
+  assert.match(js("intro.js"), /calm/);
+  assert.match(css("hero.css"), /html\[data-intro="calm"\] \.intro/);
+});

@@ -6,7 +6,8 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const ROOT = path.join(__dirname, "..");
-const { fmt, stones, waUrl, msg, introMode, readSeen, markSeen, INTRO_MEMORY_MS, pieceImage } = require("../js/lib.js");
+const lib = require("../js/lib.js");
+const { fmt, stones, waUrl, msg, introMode, pieceImage } = lib;
 
 function loadData() {
   const ctx = { window: {} };
@@ -41,30 +42,18 @@ test("waUrl codifica o texto", () => {
   );
 });
 
-test("introMode", () => {
-  const now = 1_000_000_000_000, day = 86_400_000;
-  assert.equal(INTRO_MEMORY_MS, 7 * day);
-  assert.equal(introMode({ reduced: true, hasHash: false, seenAt: null, now }), "none");
-  assert.equal(introMode({ reduced: false, hasHash: true, seenAt: null, now }), "none");
-  assert.equal(introMode({ reduced: false, hasHash: false, seenAt: null, now }), "full");
-  assert.equal(introMode({ reduced: false, hasHash: false, seenAt: now - 2 * day, now }), "short");
-  assert.equal(introMode({ reduced: false, hasHash: false, seenAt: now - 8 * day, now }), "full");
+test("introMode: o logo aparece em toda abertura", () => {
+  assert.equal(introMode({ reduced: false, hasHash: false }), "full");
+  assert.equal(introMode({ reduced: true, hasHash: false }), "calm");
+  // Link direto para uma seção cai nela, sem abertura por cima.
+  assert.equal(introMode({ reduced: false, hasHash: true }), "none");
+  assert.equal(introMode({ reduced: true, hasHash: true }), "none");
 });
 
-test("readSeen e markSeen guardam o momento", () => {
-  const store = {};
-  const mem = { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); } };
-  assert.equal(readSeen(mem), null);
-  markSeen(mem, 12345);
-  assert.equal(store["ss-intro-seen"], "12345");
-  assert.equal(readSeen(mem), 12345);
-});
-
-test("storage que lança erro não quebra", () => {
-  const bad = { getItem() { throw new Error("x"); }, setItem() { throw new Error("x"); } };
-  assert.equal(readSeen(bad), null);
-  assert.doesNotThrow(() => markSeen(bad, 1));
-  assert.equal(readSeen(null), null);
+test("sem memória de visita: nada de versão curta nem armazenamento", () => {
+  assert.equal(lib.readSeen, undefined);
+  assert.equal(lib.markSeen, undefined);
+  assert.equal(lib.INTRO_MEMORY_MS, undefined);
 });
 
 test("pieceImage monta o caminho", () => {

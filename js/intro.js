@@ -50,18 +50,37 @@
     ready();
     try { media.start(); } catch (_) { /* o poster continua lá */ }
   }
-  if (mode === "none" || !intro || !window.Path2D) return bail();
+  if (mode === "none" || !intro) return bail();
   try {
-    run();
+    if (mode === "calm") runCalm();
+    else if (window.Path2D) run();
+    else bail();
   } catch (_) {
     bail();
   }
 
-  function run() {
+  // Movimento reduzido: o logo entra e sai num fade sobre o preto, sem faísca nem giro.
+  function runCalm() {
+    let done = false;
+    const timers = [];
+    const SKIP = ["pointerdown", "wheel", "touchmove", "keydown", "scroll"];
+    const leave = () => {
+      if (done) return;
+      done = true;
+      timers.forEach(clearTimeout);
+      SKIP.forEach(ev => window.removeEventListener(ev, leave, { passive: true }));
+      ready();
+      intro.classList.add("is-fading");
+      setTimeout(() => intro.remove(), 650);
+    };
+    SKIP.forEach(ev => window.addEventListener(ev, leave, { passive: true }));
+    media.start();
+    timers.push(setTimeout(() => intro.classList.add("logo-on"), 200));
+    timers.push(setTimeout(leave, 1900));
+    SS.intro = { skip: leave };
+  }
 
-  let store = null;
-  try { store = window.localStorage; } catch (_) { /* aba anônima */ }
-  SS.lib.markSeen(store, Date.now());
+  function run() {
 
   const canvas = intro.querySelector(".intro-canvas");
   const ctx = canvas.getContext("2d");
@@ -138,22 +157,7 @@
     return { s, r, fo, so, end: t >= 4100 };
   }
 
-  function short(t) {
-    let s, r, fo = 1, so = 1;
-    if (t < 250) {
-      s = base * outBack(seg(t, 0, 250));
-      r = 0;
-    } else {
-      s = base + (cover - base) * inOutExpo(seg(t, 250, 1250));
-      r = 45 * inOut(seg(t, 250, 1250));
-      fo = 1 - outCubic(seg(t, 300, 700));
-      so = 1 - seg(t, 600, 1200);
-    }
-    if (t >= 1050) at("ready", ready);
-    return { s, r, fo, so, end: t >= 1300 };
-  }
-
-  const timeline = mode === "short" ? short : full;
+  const timeline = full;
   let raf = 0, t0 = 0, finished = false;
 
   function frame(now) {

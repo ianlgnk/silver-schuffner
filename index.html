@@ -14,17 +14,14 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <script src="js/lib.js"></script>
 <script>
-  /* Decide a abertura antes da primeira pintura: a página já nasce preta quando a Faísca vai tocar. */
+  /* Decide a abertura antes da primeira pintura: a página já nasce preta e o logo aparece em toda abertura. */
   (function () {
-    var d = document.documentElement, store = null, mode = "none";
+    var d = document.documentElement, mode = "none";
     d.classList.add("js");
-    try { store = window.localStorage; } catch (e) {}
     try {
       mode = SS.lib.introMode({
         reduced: matchMedia("(prefers-reduced-motion: reduce)").matches,
-        hasHash: location.hash.length > 1,
-        seenAt: SS.lib.readSeen(store),
-        now: Date.now()
+        hasHash: location.hash.length > 1
       });
     } catch (e) {}
     d.setAttribute("data-intro", mode);

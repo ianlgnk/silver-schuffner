@@ -49,9 +49,10 @@
 
 /* ---------- Abertura (Faísca) ---------- */
 .intro { display: none; position: absolute; inset: 0; z-index: 3; background: #000; pointer-events: none; }
-html[data-intro="full"] .intro, html[data-intro="short"] .intro { display: block; }
+html[data-intro="full"] .intro, html[data-intro="calm"] .intro { display: block; }
 .intro.is-drawing { background: transparent; }
 .intro.is-leaving { opacity: 0; transition: opacity 200ms ease; }
+.intro.is-fading { opacity: 0; transition: opacity 600ms ease; }
 .intro-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .intro-logo {
   --lw: min(78vw, 520px, 62svh);
@@ -80,15 +81,18 @@ html.intro-done .hero .ln:nth-child(2) > span { transition-delay: 90ms; }
 html.intro-done .hero-lede, html.intro-done .hero-actions { opacity: 1; transform: none; transition: opacity 700ms var(--ease-out) 350ms, transform 800ms var(--ease-out) 350ms; }
 html.intro-done .hero-actions { transition-delay: 450ms; }
 html.js .topbar { transition: opacity 600ms ease; }
-html[data-intro="full"]:not(.intro-done) .topbar, html[data-intro="short"]:not(.intro-done) .topbar { opacity: 0; pointer-events: none; }
+html[data-intro="full"]:not(.intro-done) .topbar, html[data-intro="calm"]:not(.intro-done) .topbar { opacity: 0; pointer-events: none; }
 
 /* Rede de segurança: se o script nem rodar, nada fica preso no escuro. */
-html[data-intro="full"]:not(.intro-live) .intro, html[data-intro="short"]:not(.intro-live) .intro { animation: intro-failsafe 400ms ease 8s forwards; }
+html[data-intro="full"]:not(.intro-live) .intro, html[data-intro="calm"]:not(.intro-live) .intro { animation: intro-failsafe 400ms ease 8s forwards; }
 html.js:not(.intro-live):not(.intro-done) .hero .ln > span, html.js:not(.intro-live):not(.intro-done) .hero-lede, html.js:not(.intro-live):not(.intro-done) .hero-actions, html.js:not(.intro-live):not(.intro-done) .topbar { animation: show-failsafe 600ms ease 8s forwards; }
 @keyframes intro-failsafe { to { opacity: 0; visibility: hidden; } }
 @keyframes show-failsafe { to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
+  .intro-logo, .intro.logo-on .intro-logo { transform: translate(-50%, 0); }
+  .intro.logo-on .intro-logo { transition: opacity 600ms ease; }
+  .intro-sweep { display: none; }
   html.js .hero .ln > span, html.js .hero-lede, html.js .hero-actions { transform: none; }
   html.js .hero .ln > span { opacity: 0; }
   html.intro-done .hero .ln > span { opacity: 1; transition: opacity 300ms ease; }

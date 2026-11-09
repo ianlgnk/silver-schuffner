@@ -6,9 +6,6 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
-  const SEEN_KEY = "ss-intro-seen";
-  const INTRO_MEMORY_MS = 7 * 24 * 60 * 60 * 1000;
-
   const fmt = n => String(n).replace(".", ",");
 
   /* "7x7 Ø1.75/16" → [{ qty: 1, label: "7 × 7 mm" }, { qty: 16, label: "Ø 1,75 mm" }] */
@@ -33,27 +30,14 @@
     ian: () => "Oi, Ian! Vi o site da Silver Schuffner e quero um site também."
   };
 
-  function introMode({ reduced, hasHash, seenAt, now }) {
-    if (reduced || hasHash) return "none";
-    if (seenAt == null || now - seenAt > INTRO_MEMORY_MS) return "full";
-    return "short";
-  }
-
-  function readSeen(storage) {
-    try {
-      const v = storage && storage.getItem(SEEN_KEY);
-      const n = v == null ? NaN : Number(v);
-      return Number.isFinite(n) ? n : null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  function markSeen(storage, now) {
-    try { if (storage) storage.setItem(SEEN_KEY, String(now)); } catch (_) { /* aba anônima ou bloqueio */ }
+  /* O logo aparece em toda abertura. Link direto para uma seção (#catalogo) cai nela sem abertura;
+   * com movimento reduzido, o logo entra num fade simples (modo "calm"). */
+  function introMode({ reduced, hasHash }) {
+    if (hasHash) return "none";
+    return reduced ? "calm" : "full";
   }
 
   const pieceImage = (piece, i) => `img/${piece.c}_${i}.png`;
 
-  return { fmt, stones, waUrl, msg, introMode, readSeen, markSeen, INTRO_MEMORY_MS, pieceImage };
+  return { fmt, stones, waUrl, msg, introMode, pieceImage };
 });
