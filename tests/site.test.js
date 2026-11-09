@@ -161,3 +161,30 @@ test("movimento reduzido mantém os fades curtos do catálogo", () => {
 test("rolagem dos links do menu no computador dura 1 s", () => {
   assert.match(js("ui.js"), /lenis\.scrollTo\(target, \{ offset, duration: 1\.0 \}\)/);
 });
+
+/* ---------- Auditoria impeccable ---------- */
+test("imagens em WebP: nenhum PNG referenciado nem sobrando em img/", () => {
+  const all = html + ["base.css", "hero.css", "catalog.css", "sections.css", "tokens.css"].map(css).join("") +
+    ["lib.js", "ui.js", "catalog.js", "intro.js", "data.js"].map(js).join("");
+  assert.doesNotMatch(all, /\.png\b/);
+  assert.deepEqual(fs.readdirSync(path.join(ROOT, "img")).filter(f => f.endsWith(".png")), []);
+});
+
+test("vídeo da hero em paisagem leve (até 1,6 MB)", () => {
+  assert.ok(fs.statSync(path.join(ROOT, "media/hero-landscape.mp4")).size <= 1.6e6);
+});
+
+test("rótulos em maiúsculas com pelo menos 12 px", () => {
+  assert.match(rule("base.css", ".tag"), /font-size: 12px/);
+  assert.match(rule("catalog.css", ".plate .chip"), /font-size: 12px/);
+});
+
+test("texto corrido sem palavra sozinha na última linha", () => {
+  assert.match(css("base.css"), /\np \{ text-wrap: pretty; \}/);
+});
+
+test("link de crédito com 44 px de toque sem mexer no layout", () => {
+  const r = rule("base.css", ".credit");
+  assert.match(r, /padding-block: 11px/);
+  assert.match(r, /margin-block: -11px/);
+});

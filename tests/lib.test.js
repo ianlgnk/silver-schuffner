@@ -57,7 +57,7 @@ test("sem memória de visita: nada de versão curta nem armazenamento", () => {
 });
 
 test("pieceImage monta o caminho", () => {
-  assert.equal(pieceImage({ c: "0413" }, 4), "img/0413_4.png");
+  assert.equal(pieceImage({ c: "0413" }, 4), "img/0413_4.webp");
 });
 
 test("dados: 23 peças, tipos e imagens existentes", () => {
@@ -71,7 +71,7 @@ test("dados: 23 peças, tipos e imagens existentes", () => {
   for (const p of SS.PIECES) {
     assert.ok(p.h >= 1 && p.h <= p.v, `${p.c}: destaque ${p.h} fora de 1..${p.v}`);
     for (let i = 1; i <= p.v; i++) {
-      assert.ok(fs.existsSync(path.join(ROOT, `img/${p.c}_${i}.png`)), `falta img/${p.c}_${i}.png`);
+      assert.ok(fs.existsSync(path.join(ROOT, `img/${p.c}_${i}.webp`)), `falta img/${p.c}_${i}.webp`);
     }
   }
 });

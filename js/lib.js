@@ -37,7 +37,7 @@
     return reduced ? "calm" : "full";
   }
 
-  const pieceImage = (piece, i) => `img/${piece.c}_${i}.png`;
+  const pieceImage = (piece, i) => `img/${piece.c}_${i}.webp`;
 
   return { fmt, stones, waUrl, msg, introMode, pieceImage };
 });

@@ -46,11 +46,13 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
 .ln { display: block; }
 .lede { color: var(--muted); font-size: clamp(17px, 1.5vw, 19px); line-height: 1.55; max-width: 38ch; }
 .fine { color: var(--muted); font-size: 14px; }
+/* Texto corrido: o navegador evita deixar uma palavra sozinha na última linha. */
+p { text-wrap: pretty; }
 
 .tag {
   display: inline-flex; align-items: center; gap: 6px; flex: none;
   font-family: var(--font-body); font-style: normal; font-weight: 500;
-  font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1;
+  font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1;
   padding: 6px 10px; border-radius: 999px;
   color: var(--silver); border: 1px solid var(--silver-dim);
 }
@@ -171,7 +173,8 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
 .footer-logo { height: 64px; width: auto; }
 .footer-notes { display: grid; gap: 8px; max-width: 52ch; }
 .footer-notes small { color: var(--muted); font-size: 13px; line-height: 1.5; }
-.credit { font-size: 14px; color: var(--fg-soft); text-decoration-color: var(--silver-dim); transition: color 200ms ease, text-decoration-color 200ms ease; }
+/* Área de toque de 44 px de altura; a margem negativa devolve o espaço, então o rodapé não se mexe. */
+.credit { display: inline-block; padding-block: 11px; margin-block: -11px; font-size: 14px; color: var(--fg-soft); text-decoration-color: var(--silver-dim); transition: color 200ms ease, text-decoration-color 200ms ease; }
 @media (hover: hover) and (pointer: fine) {
   .credit:hover { color: var(--champagne); text-decoration-color: currentColor; }
 }

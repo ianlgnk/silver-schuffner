@@ -14,7 +14,7 @@
   // Estrela de quatro pontas em caixa de 100 unidades (a mesma do esboço aprovado).
   const STAR_D = "M0-50 C3-8 8-3 50 0 C8 3 3 8 0 50 C-3 8 -8 3 -50 0 C-8 -3 -3 -8 0 -50Z";
   const INNER_RADIUS = 14.6;            // raio interno da estrela, em unidades
-  const STAR_IN_LOGO = [355 / 618, 65 / 408]; // centro da estrela dentro do logo.png
+  const STAR_IN_LOGO = [355 / 618, 65 / 408]; // centro da estrela dentro do logo (618 × 408)
 
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const seg = (t, a, b) => clamp((t - a) / (b - a));

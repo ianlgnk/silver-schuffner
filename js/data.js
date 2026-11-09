@@ -1,5 +1,5 @@
 /*
- * Catálogo. Fotos em img/<código>_<n>.png (n = 1..v).
+ * Catálogo. Fotos em img/<código>_<n>.webp (n = 1..v).
  * c: código do molde · n: nome sugerido · t: tipo · w: peso (g)
  * s: pedras na notação do catálogo · v: nº de variações de cor · h: variação da foto de destaque
  */

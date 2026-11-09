@@ -64,7 +64,7 @@ html[data-intro="full"] .intro, html[data-intro="calm"] .intro { display: block;
  * sem repintar a cada quadro enquanto o canvas da abertura desenha. */
 .intro-sweep {
   position: absolute; inset: 0; overflow: hidden;
-  -webkit-mask: url("../img/logo-alpha.png") center / 100% 100% no-repeat; mask: url("../img/logo-alpha.png") center / 100% 100% no-repeat;
+  -webkit-mask: url("../img/logo-alpha.webp") center / 100% 100% no-repeat; mask: url("../img/logo-alpha.webp") center / 100% 100% no-repeat;
   opacity: 0;
 }
 .intro-sweep::before {
