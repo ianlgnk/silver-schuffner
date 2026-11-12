@@ -212,7 +212,7 @@
       const drift = () => { if (!reduced) poster.classList.add("is-drift"); };
       if (reduced) return;
       if (saveData) return drift();
-      // Celular em pé recebe o corte vertical (macro da argola); o resto, o quadro inteiro.
+      // Celular em pé recebe o vídeo vertical da cravação; o resto, o corte em paisagem.
       video.src = matchMedia("(orientation: portrait)").matches ? "media/hero-portrait.mp4" : "media/hero-landscape.mp4";
       video.addEventListener("playing", () => hero.classList.add("has-video"), { once: true });
       video.addEventListener("error", drift, { once: true });
