@@ -42,6 +42,7 @@
   <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M4 9h16M4 15h16"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></symbol>
 </svg>
 
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
@@ -52,10 +53,10 @@
       <img src="img/logo-alpha-sm.webp" alt="" width="300" height="198">
     </a>
     <nav class="nav" aria-label="Seções">
-      <a href="#catalogo">Catálogo</a>
-      <a href="#historia">História</a>
+      <a href="#joalheria">Joalheria</a>
       <a href="#servicos">Serviços</a>
       <a href="#depoimentos">Depoimentos</a>
+      <a href="#historia">História</a>
       <a href="#contato">Contato</a>
     </nav>
     <button class="btn btn-sm topbar-wa" type="button" data-wa="geral">
@@ -74,10 +75,10 @@
       <button class="icon-btn" type="button" data-close-menu aria-label="Fechar menu"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
     </div>
     <nav class="menu-nav" aria-label="Seções">
-      <a href="#catalogo">Catálogo</a>
-      <a href="#historia">História</a>
+      <a href="#joalheria">Joalheria</a>
       <a href="#servicos">Serviços</a>
       <a href="#depoimentos">Depoimentos</a>
+      <a href="#historia">História</a>
       <a href="#contato">Contato</a>
     </nav>
     <button class="btn btn-lg menu-wa" type="button" data-wa="geral">
@@ -105,39 +106,23 @@
       <h1 class="display" id="hero-title"><span class="ln"><span>Joias com a</span></span> <span class="ln"><span><em>sua pedra</em></span></span></h1>
       <p class="hero-lede">Anéis, brincos e colares feitos no ateliê, com a pedra e o tamanho que você escolher.</p>
       <div class="hero-actions">
-        <a class="btn" href="#catalogo">Ver as peças<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn" href="#joalheria">Ver as peças<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <button class="btn btn-ghost" type="button" data-wa="geral"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</button>
       </div>
     </div>
     <div class="hero-end" id="hero-end" aria-hidden="true"></div>
   </section>
 
-  <section class="section catalog" id="catalogo" aria-labelledby="catalogo-title">
+  <section class="section catalog" id="joalheria" aria-labelledby="joalheria-title">
     <div class="wrap">
       <div class="section-head">
-        <h2 class="h2" id="catalogo-title"><span class="ln"><span>Uma seleção</span></span> <span class="ln"><span>de <em>modelos</em></span></span></h2>
-        <p class="lede">Toque numa peça para ver o peso, as pedras e as cores disponíveis.</p>
+        <h2 class="h2" id="joalheria-title"><span class="ln"><span>Peças que saíram</span></span> <span class="ln"><span>do <em>ateliê</em></span></span></h2>
+        <p class="lede">Toque numa peça para pedir a sua em prata ou ouro, com a pedra que você escolher.</p>
       </div>
-      <div class="filters" id="filters" role="group" aria-label="Filtrar por tipo"></div>
-      <div class="grid" id="grid"></div>
-      <p class="fine">Imagens ilustrativas dos modelos. Peso sujeito à variação de acordo com o tamanho do aro.</p>
-    </div>
-  </section>
-
-  <section class="section story" id="historia" aria-labelledby="historia-title">
-    <div class="wrap story-grid">
-      <figure class="story-figure">
-        <img class="story-photo" src="img/historia-feira-1600.webp" srcset="img/historia-feira-800.webp 800w, img/historia-feira-1600.webp 1600w" sizes="(min-width: 900px) 45vw, 100vw" alt="A dupla do ateliê no estande da Silver Schuffner na FIPP, a primeira feira, com colares de prata e pedras expostos" width="1600" height="2000" loading="lazy" decoding="async">
-        <figcaption class="story-slot"><span>Foto do ateliê</span><span class="tag">Em breve</span></figcaption>
-      </figure>
-      <div class="story-text">
-        <h2 class="h2" id="historia-title"><span class="ln"><span>Nossa <em>história</em></span></span></h2>
-        <p class="lede">Esta parte vai contar a trajetória do ateliê com as palavras de quem faz as peças.</p>
-        <ol class="chapters">
-          <li class="chapter"><h3 class="h3">Como tudo começou</h3><p>Quando e como o ateliê começou na ourivesaria.</p><span class="tag">Em breve</span></li>
-          <li class="chapter"><h3 class="h3">O ateliê hoje</h3><p>Onde fica, que peças mais faz e em quais feiras encontrar.</p><span class="tag">Em breve</span></li>
-          <li class="chapter"><h3 class="h3">Nosso jeito de trabalhar</h3><p>O cuidado na escolha das pedras, no acabamento e no atendimento.</p><span class="tag">Em breve</span></li>
-        </ol>
+      <div class="grid" id="grid" data-list="destaques"></div>
+      <div class="catalog-more">
+        <p class="catalog-more-count" id="total-pecas" hidden></p>
+        <a class="btn btn-lg" href="joalheria.html">Ver galeria completa<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
   </section>
@@ -146,36 +131,74 @@
     <div class="wrap">
       <div class="section-head">
         <h2 class="h2" id="servicos-title"><span class="ln"><span>O que o ateliê</span></span> <span class="ln"><span><em>faz por você</em></span></span></h2>
-        <p class="lede">Os serviços abaixo mostram o formato. A lista definitiva vem do ateliê.</p>
+        <p class="lede">O ateliê trabalha só com ouro e prata. Não fazemos banho.</p>
       </div>
-      <ul class="svc-list">
-        <li class="svc">
-          <div class="svc-name"><h3 class="h3">Peças sob encomenda</h3><span class="tag">Exemplo</span></div>
-          <p>Escolha um modelo do catálogo e o ateliê produz com a cor de pedra e o tamanho de aro que você quiser.</p>
-          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Peças sob encomenda">Pedir orçamento</button>
-        </li>
-        <li class="svc">
-          <div class="svc-name"><h3 class="h3">Conserto e restauração</h3><span class="tag">Exemplo</span></div>
-          <p>Solda, troca de pedra, polimento e limpeza para a joia voltar a brilhar.</p>
-          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Conserto e restauração">Pedir orçamento</button>
-        </li>
-        <li class="svc">
-          <div class="svc-name"><h3 class="h3">Ajuste de tamanho</h3><span class="tag">Exemplo</span></div>
-          <p>Aumentar ou diminuir o aro de anéis e alianças.</p>
-          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Ajuste de tamanho">Pedir orçamento</button>
-        </li>
-        <li class="svc">
-          <div class="svc-name"><h3 class="h3">Personalização</h3><span class="tag">Exemplo</span></div>
-          <p>Gravação de nomes e datas e peças pensadas para presentes e datas especiais.</p>
-          <button class="btn btn-ghost btn-sm" type="button" data-wa="servico" data-name="Personalização">Pedir orçamento</button>
-        </li>
-      </ul>
+      <div class="svc-body">
+        <div class="svc-media" aria-hidden="true">
+          <div class="svc-frame">
+            <img src="img/servicos/producao-480.webp" srcset="img/servicos/producao-480.webp 480w, img/servicos/producao-720.webp 720w" sizes="(min-width: 900px) 38vw, 1px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <img src="img/servicos/reparo-480.webp" srcset="img/servicos/reparo-480.webp 480w, img/servicos/reparo-720.webp 720w" sizes="(min-width: 900px) 38vw, 1px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <img src="img/servicos/ajuste-480.webp" srcset="img/servicos/ajuste-480.webp 480w, img/servicos/ajuste-720.webp 720w" sizes="(min-width: 900px) 38vw, 1px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <img src="img/servicos/limpeza-480.webp" srcset="img/servicos/limpeza-480.webp 480w, img/servicos/limpeza-720.webp 720w" sizes="(min-width: 900px) 38vw, 1px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <img src="img/servicos/lapidacao-480.webp" srcset="img/servicos/lapidacao-480.webp 480w, img/servicos/lapidacao-720.webp 720w" sizes="(min-width: 900px) 38vw, 1px" alt="" width="480" height="600" loading="lazy" decoding="async">
+          </div>
+          <div class="svc-captions">
+            <p><span>Produção de joias</span><small>Metal fundido no cadinho</small></p>
+            <p><span>Reparo de joias</span><small>Solda na pinça, sobre a colmeia</small></p>
+            <p><span>Ajuste de joias</span><small>Aro no tribulet</small></p>
+            <p><span>Limpeza de joias</span><small>Polimento na politriz</small></p>
+            <p><span>Lapidação</span><small>Gema saída da lapidação</small></p>
+          </div>
+        </div>
+        <ul class="svc-list">
+          <li class="svc">
+            <img class="svc-thumb" src="img/servicos/producao-480.webp" srcset="img/servicos/producao-480.webp 480w, img/servicos/producao-720.webp 720w" sizes="96px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <div class="svc-text">
+              <h3 class="h3">Produção de joias</h3>
+              <p>Peças novas a partir de um modelo da joalheria ou da sua ideia, em ouro ou prata, com a pedra que você escolher.</p>
+              <button class="svc-cta" type="button" data-wa="servico" data-name="Produção de joias">Pedir orçamento<span class="sr-only"> de produção de joias</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+          </li>
+          <li class="svc">
+            <img class="svc-thumb" src="img/servicos/reparo-480.webp" srcset="img/servicos/reparo-480.webp 480w, img/servicos/reparo-720.webp 720w" sizes="96px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <div class="svc-text">
+              <h3 class="h3">Reparo de joias</h3>
+              <p>Solda, troca de pedra e recuperação de peças quebradas ou danificadas.</p>
+              <button class="svc-cta" type="button" data-wa="servico" data-name="Reparo de joias">Pedir orçamento<span class="sr-only"> de reparo de joias</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+          </li>
+          <li class="svc">
+            <img class="svc-thumb" src="img/servicos/ajuste-480.webp" srcset="img/servicos/ajuste-480.webp 480w, img/servicos/ajuste-720.webp 720w" sizes="96px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <div class="svc-text">
+              <h3 class="h3">Ajuste de joias</h3>
+              <p>Aumentar ou diminuir o aro de anéis e alianças e acertar o comprimento de correntes.</p>
+              <button class="svc-cta" type="button" data-wa="servico" data-name="Ajuste de joias">Pedir orçamento<span class="sr-only"> de ajuste de joias</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+          </li>
+          <li class="svc">
+            <img class="svc-thumb" src="img/servicos/limpeza-480.webp" srcset="img/servicos/limpeza-480.webp 480w, img/servicos/limpeza-720.webp 720w" sizes="96px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <div class="svc-text">
+              <h3 class="h3">Limpeza de joias</h3>
+              <p>Limpeza e polimento para a peça voltar a brilhar.</p>
+              <button class="svc-cta" type="button" data-wa="servico" data-name="Limpeza de joias">Pedir orçamento<span class="sr-only"> de limpeza de joias</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+          </li>
+          <li class="svc">
+            <img class="svc-thumb" src="img/servicos/lapidacao-480.webp" srcset="img/servicos/lapidacao-480.webp 480w, img/servicos/lapidacao-720.webp 720w" sizes="96px" alt="" width="480" height="600" loading="lazy" decoding="async">
+            <div class="svc-text">
+              <h3 class="h3">Lapidação</h3>
+              <p>Lapidação de gemas para montar na sua joia.</p>
+              <button class="svc-cta" type="button" data-wa="servico" data-name="Lapidação">Pedir orçamento<span class="sr-only"> de lapidação</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+          </li>
+        </ul>
+      </div>
 
       <div class="process">
         <div class="process-head"><h3 class="h3">Como funciona uma encomenda</h3><span class="tag">Exemplo</span></div>
         <ol class="steps">
-          <li class="step"><span class="step-n" aria-hidden="true">1</span><h4>Escolha</h4><p>Você escolhe um modelo no catálogo e anota o código.</p></li>
-          <li class="step"><span class="step-n" aria-hidden="true">2</span><h4>Conversa</h4><p>No WhatsApp, vocês combinam a cor da pedra e o tamanho do aro.</p></li>
+          <li class="step"><span class="step-n" aria-hidden="true">1</span><h4>Escolha</h4><p>Você escolhe uma peça na joalheria, o metal e a pedra.</p></li>
+          <li class="step"><span class="step-n" aria-hidden="true">2</span><h4>Conversa</h4><p>No WhatsApp, vocês combinam os detalhes e o tamanho.</p></li>
           <li class="step"><span class="step-n" aria-hidden="true">3</span><h4>Produção</h4><p>A peça é produzida no ateliê.</p></li>
           <li class="step"><span class="step-n" aria-hidden="true">4</span><h4>Entrega</h4><p>Você recebe a joia pronta para usar.</p></li>
         </ol>
@@ -197,10 +220,28 @@
     </div>
   </section>
 
+  <section class="section story" id="historia" aria-labelledby="historia-title">
+    <div class="wrap story-grid">
+      <figure class="story-figure">
+        <img class="story-photo" src="img/historia-feira-1600.webp" srcset="img/historia-feira-800.webp 800w, img/historia-feira-1600.webp 1600w" sizes="(min-width: 900px) 45vw, 100vw" alt="João Vitor Esteves e Thayna Schuffner no estande da Silver Schuffner na FIPP, a primeira feira, com colares de prata e pedras expostos" width="1600" height="2000" loading="lazy" decoding="async">
+        <img class="story-logo" src="img/logo-historia-480.webp" srcset="img/logo-historia-480.webp 480w, img/logo-historia-960.webp 960w" sizes="(min-width: 900px) 20vw, 48vw" alt="Logo da Silver Schuffner Joias &amp; Gemas, com um diamante entre arabescos" width="480" height="480" loading="lazy" decoding="async">
+      </figure>
+      <div class="story-text">
+        <h2 class="h2" id="historia-title"><span class="ln"><span>Nossa <em>história</em></span></span></h2>
+        <p class="lede">A Silver Schuffner é o ateliê de João Vitor Esteves e Thayna Schuffner, uma história que começou nas pedras e virou ourivesaria.</p>
+        <ol class="chapters">
+          <li class="chapter"><h3 class="h3">Começou nas pedras</h3><p>O pai da Thayna é pedrista e trabalha com gemas há mais de 30 anos.</p></li>
+          <li class="chapter"><h3 class="h3">A ideia do sogro</h3><p>Foi ele quem sugeriu ao João virar ourives: a cidade procurava o ofício e tinha pouca gente dedicada a ele. Com o apoio do sogro, João começou na bancada.</p></li>
+          <li class="chapter"><h3 class="h3">O ateliê hoje</h3><p>A marca nasceu em fevereiro de 2026, e a primeira feira foi a FIPP. João faz as peças em prata e ouro, e Thayna cuida das gemas.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <section class="section contact" id="contato" aria-labelledby="contato-title">
     <div class="wrap">
       <h2 class="display-2" id="contato-title"><span class="ln"><span>Gostou de</span></span> <span class="ln"><span>alguma <em>peça?</em></span></span></h2>
-      <p class="lede">Chame o ateliê no WhatsApp e combine o modelo, a cor da pedra e o tamanho.</p>
+      <p class="lede">Chame o ateliê no WhatsApp e combine o modelo, o metal, a pedra e o tamanho.</p>
       <button class="btn btn-lg" type="button" data-wa="geral"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</button>
       <dl class="contact-list">
         <div class="contact-item"><dt>WhatsApp</dt><dd id="c-whatsapp" class="pending">Número do ateliê em breve</dd></div>

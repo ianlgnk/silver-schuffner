@@ -27,13 +27,15 @@ test("toda âncora interna tem destino", () => {
 });
 
 test("seções na ordem", () => {
-  const order = ["inicio", "catalogo", "historia", "servicos", "depoimentos", "contato"].map(id => html.indexOf(`id="${id}"`));
+  const order = ["inicio", "joalheria", "servicos", "depoimentos", "historia", "contato"].map(id => html.indexOf(`id="${id}"`));
   assert.ok(order.every(i => i > 0), "falta alguma seção");
   assert.deepEqual([...order].sort((a, b) => a - b), order);
 });
 
 test("nenhuma afirmação proibida", () => {
-  assert.doesNotMatch(html, /feit[ao]s? à mão|cravação à mão|925|18k|desde 19/i);
+  for (const page of [html, read("joalheria.html"), read("js/catalog.js"), read("js/data.js")]) {
+    assert.doesNotMatch(page, /feit[ao]s? à mão|cravação à mão|925|18k|desde 19/i);
+  }
 });
 
 test("CDN com versão fixa", () => {
@@ -65,7 +67,7 @@ test("modo da abertura decidido no head, antes da primeira pintura", () => {
 });
 
 test("camada da abertura dentro da hero", () => {
-  const hero = html.slice(html.indexOf('id="inicio"'), html.indexOf('id="catalogo"'));
+  const hero = html.slice(html.indexOf('id="inicio"'), html.indexOf('id="joalheria"'));
   assert.match(hero, /class="intro"[^>]*aria-hidden="true"/);
   assert.match(hero, /<canvas class="intro-canvas"/);
   assert.match(hero, /class="intro-logo"/);
@@ -155,11 +157,11 @@ test("movimento reduzido mantém os fades curtos do catálogo", () => {
   const src = js("catalog.js");
   assert.doesNotMatch(src, /reduced\(\) \|\| !img\.animate/);
   assert.match(src, /if \(!img\.animate\) return swap\(\);/);
-  assert.match(src, /if \(reduced\(\)\) return void transition\(applyFilter\);/);
+  assert.match(src, /if \(reduced\(\)\) return void transition\(update\);/);
 });
 
 test("rolagem dos links do menu no computador dura 1 s", () => {
-  assert.match(js("ui.js"), /lenis\.scrollTo\(target, \{ offset, duration: 1\.0 \}\)/);
+  assert.match(js("ui.js"), /lenis\.scrollTo\(target, \{ duration: 1\.0 \}\)/);
 });
 
 /* ---------- Auditoria impeccable ---------- */
@@ -187,4 +189,52 @@ test("link de crédito com 44 px de toque sem mexer no layout", () => {
   const r = rule("base.css", ".credit");
   assert.match(r, /padding-block: 11px/);
   assert.match(r, /margin-block: -11px/);
+});
+
+/* ---------- Joalheria ---------- */
+const joia = read("joalheria.html");
+
+test("joalheria: página própria com busca, filtros e grade completa", () => {
+  assert.match(joia, /<meta name="robots" content="noindex, nofollow">/);
+  assert.equal((joia.match(/<h1[\s>]/g) || []).length, 1);
+  assert.match(joia, /<input type="search" id="busca"/);
+  assert.match(joia, /id="filters"/);
+  assert.match(joia, /id="grid" data-list="joalheria"/);
+  assert.match(joia, /id="vazio" hidden/);
+  assert.match(joia, /<dialog class="piece" id="piece"/);
+  assert.doesNotMatch(joia, /js\/intro\.js|class="hero/);
+  const order = ["js/lib.js", "js/config.js", "js/data.js", "js/ui.js", "js/catalog.js"].map(s => joia.indexOf(`src="${s}"`));
+  assert.ok(order.every(i => i > 0), "falta algum script");
+  assert.deepEqual([...order].sort((a, b) => a - b), order);
+});
+
+test("joalheria: menu leva às seções da home e marca a página atual", () => {
+  for (const id of ["historia", "servicos", "depoimentos", "contato"]) assert.match(joia, new RegExp(`href="index\\.html#${id}"`));
+  assert.match(joia, /<a href="joalheria\.html" aria-current="page">Joalheria<\/a>/);
+  assert.doesNotMatch(joia, /<a [^>]*href="#(?!conteudo)/);
+});
+
+test("home: seleção de fotos e link para a joalheria", () => {
+  assert.match(html, /id="grid" data-list="destaques"/);
+  assert.match(html, /href="joalheria\.html"/);
+  assert.doesNotMatch(html, /id="filters"/);
+  assert.equal((html.match(/>Joalheria</g) || []).length, 2);
+});
+
+test("serviços reais, sem banho, só ouro e prata", () => {
+  for (const s of ["Produção de joias", "Reparo de joias", "Ajuste de joias", "Limpeza de joias", "Lapidação"]) {
+    assert.match(html, new RegExp(`data-name="${s}"`));
+  }
+  assert.match(html, /só com ouro e prata\. Não fazemos banho\./);
+  const svc = html.slice(html.indexOf('id="servicos"'), html.indexOf('class="process"'));
+  assert.doesNotMatch(svc, /Exemplo/);
+});
+
+test("pedido de peça pede metal; gema vai sem metal", () => {
+  const c = read("js/catalog.js");
+  assert.match(c, /name="metal" value="Prata"/);
+  assert.match(c, /name="metal" value="Ouro"/);
+  assert.match(c, /name="pedra"/);
+  assert.match(c, /if \(i\.t === "gemas"\) return msg\.gem/);
+  assert.match(read("js/ui.js"), /SS\.catalog\.orderMessage\(el\)/);
 });

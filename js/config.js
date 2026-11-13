@@ -1,12 +1,14 @@
 /*
  * Configuração do site: o único lugar para preencher antes do lançamento.
  *
- * whatsapp  número do ateliê só com dígitos, com 55 e DDD. Ex.: "5533999999999".
- *           Enquanto estiver vazio, os botões de WhatsApp mostram um aviso
- *           em vez de abrir o app.
+ * whatsapp       WhatsApp do Esteves, com 55 e DDD: peças, serviços e contato geral.
+ *                Enquanto estiver vazio, os botões de WhatsApp mostram um aviso
+ *                em vez de abrir o app.
+ * whatsappGemas  WhatsApp da Thayna, para pedidos de gemas. Vazio = vai para o do Esteves.
  * instagram usuário do Instagram sem o @. Ex.: "silverschuffner".
  */
 window.SS_CONFIG = {
-  whatsapp: "",
-  instagram: ""
+  whatsapp: "5533984559979",
+  whatsappGemas: "",
+  instagram: "silverschuffner_joias"
 };

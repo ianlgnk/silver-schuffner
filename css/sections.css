@@ -2,11 +2,10 @@
 .story-grid { display: grid; gap: 72px; }
 .story-figure { position: relative; margin-right: 12%; }
 .story-photo { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 40%; border-radius: 2px; }
-.story-slot {
-  position: absolute; right: -14%; bottom: -40px; width: 48%; aspect-ratio: 1;
-  display: grid; place-content: center; justify-items: center; gap: 12px; text-align: center; padding: 16px;
-  background: var(--bg); border: 1px solid var(--silver-dim);
-  font-family: var(--font-display); font-style: italic; font-size: clamp(19px, 2vw, 24px); color: var(--muted);
+/* Logo do ateliê (post de lançamento da marca) sobre o canto da foto, no preto da própria arte. */
+.story-logo {
+  position: absolute; right: -14%; bottom: -40px; width: 48%; height: auto; aspect-ratio: 1;
+  background: #000; border: 1px solid var(--silver-dim); border-radius: 2px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
 }
 .story-text .lede { margin-top: 24px; }
@@ -16,20 +15,81 @@
 @media (min-width: 900px) {
   .story-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(64px, 8vw, 128px); align-items: center; }
   .story-figure { margin-right: 0; }
-  .story-slot { right: -12%; bottom: -48px; width: 44%; }
+  .story-logo { right: -12%; bottom: -48px; width: 44%; }
   .chapter { grid-template-columns: minmax(0, 1fr) auto; column-gap: 24px; }
   .chapter h3 { grid-column: 1; }
   .chapter p { grid-column: 1; }
   .chapter .tag { grid-column: 2; grid-row: 1; align-self: center; }
 }
 
-/* ---------- Serviços ---------- */
+/* ---------- Serviços ----------
+ * Índice da bancada: cada serviço com um quadro real do ateliê. No celular o quadro vai
+ * ao lado de cada linha; no computador fica um só, fixo à esquerda, e troca conforme a
+ * linha em foco (só CSS, por :has). A linha inteira abre o WhatsApp do serviço.
+ */
 .svc-list { border-bottom: 1px solid var(--line); }
-.svc { display: grid; gap: 14px; padding-block: 28px; border-top: 1px solid var(--line); justify-items: start; }
-.svc-name { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; }
-.svc p { color: var(--muted); max-width: 52ch; }
+.svc {
+  position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 18px; align-items: start;
+  padding-block: 24px; border-top: 1px solid var(--line);
+}
+.svc-thumb {
+  width: 88px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 3px; background: var(--surface);
+  outline: 1px solid var(--silver-dim); outline-offset: 4px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+.svc-text { display: grid; gap: 8px; justify-items: start; }
+.svc .h3 { font-size: clamp(24px, 2.6vw, 34px); transition: color 250ms ease; }
+.svc p { color: var(--muted); max-width: 46ch; }
+.svc-cta {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 2px; padding: 0; border: 0; background: none;
+  color: var(--accent); font-size: 14px; font-weight: 600; letter-spacing: 0.02em;
+}
+/* A linha toda é o alvo do toque. */
+.svc-cta::after { content: ""; position: absolute; inset: 0; }
+.svc-cta .icon { width: 16px; height: 16px; transition: transform 250ms var(--ease-out); }
+.svc-media { display: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .svc:hover .svc-cta .icon { transform: translateX(4px); }
+  .svc-list:has(.svc:hover) .svc:not(:hover) .h3 { color: var(--muted); }
+}
+
 @media (min-width: 900px) {
-  .svc { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) auto; align-items: center; gap: 48px; padding-block: 36px; }
+  .svc-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(48px, 6vw, 104px); align-items: start; }
+  /* Quadro do ateliê: foto tratada no tom do site, num passe-partout escuro com filete prata,
+   * e a legenda do serviço embaixo. Troca por desfoque que assenta, não por corte seco. */
+  .svc-media {
+    display: grid; gap: 16px; position: sticky; top: calc(var(--topbar-h) + 32px);
+  }
+  .svc-frame {
+    position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px;
+    background: var(--surface); outline: 1px solid var(--silver-dim); outline-offset: 8px;
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.5), 0 6px 14px rgba(0, 0, 0, 0.35);
+  }
+  .svc-frame img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transform: scale(1.06); filter: blur(10px) saturate(0.8);
+    transition: opacity 450ms var(--ease-out), transform 1100ms var(--ease-out), filter 700ms var(--ease-out);
+  }
+  .svc-captions { display: grid; margin-top: 10px; }
+  .svc-captions p {
+    grid-area: 1 / 1; display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    opacity: 0; transform: translateY(6px); transition: opacity 350ms var(--ease-out), transform 450ms var(--ease-out);
+  }
+  .svc-captions span { font-family: var(--font-display); font-style: italic; font-size: 20px; color: var(--fg); }
+  .svc-captions small { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-align: right; }
+  /* Sem linha em foco, aparece o primeiro serviço. */
+  .svc-body:not(:has(.svc:is(:hover, :focus-within))) :is(.svc-frame img, .svc-captions p):nth-child(1),
+  .svc-body:has(.svc:nth-child(1):is(:hover, :focus-within)) :is(.svc-frame img, .svc-captions p):nth-child(1),
+  .svc-body:has(.svc:nth-child(2):is(:hover, :focus-within)) :is(.svc-frame img, .svc-captions p):nth-child(2),
+  .svc-body:has(.svc:nth-child(3):is(:hover, :focus-within)) :is(.svc-frame img, .svc-captions p):nth-child(3),
+  .svc-body:has(.svc:nth-child(4):is(:hover, :focus-within)) :is(.svc-frame img, .svc-captions p):nth-child(4),
+  .svc-body:has(.svc:nth-child(5):is(:hover, :focus-within)) :is(.svc-frame img, .svc-captions p):nth-child(5) { opacity: 1; transform: none; filter: none; }
+  .svc { grid-template-columns: minmax(0, 1fr); padding-block: 32px; }
+  .svc:first-child { border-top: 0; padding-top: 0; }
+  .svc-thumb { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .svc-frame img, .svc-captions p { transform: none; filter: none; transition: opacity 200ms ease; }
 }
 
 .process { margin-top: clamp(80px, 10vw, 128px); }

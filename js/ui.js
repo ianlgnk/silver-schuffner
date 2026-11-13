@@ -30,9 +30,9 @@
 (function () {
   "use strict";
   const SS = (window.SS = window.SS || {});
-  const { msg, waUrl } = SS.lib;
+  const { msg, waUrl, waNumber } = SS.lib;
   const CONFIG = window.SS_CONFIG || {};
-  const number = String(CONFIG.whatsapp || "").replace(/\D/g, "");
+  const number = waNumber("geral", CONFIG);
   const insta = String(CONFIG.instagram || "").replace(/^@/, "").trim();
   const LENIS_SRC = "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js";
 
@@ -62,16 +62,18 @@
   const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   /* ---------- WhatsApp ---------- */
-  function openWhatsApp(text) {
-    if (!number) {
+  function openWhatsApp(text, kind = "geral") {
+    const to = waNumber(kind, CONFIG);
+    if (!to) {
       toast(`O WhatsApp do ateliê entra aqui no lançamento. A mensagem será: <b>“${escapeHtml(text)}”</b>`);
       return;
     }
-    window.open(waUrl(number, text), "_blank", "noopener");
+    window.open(waUrl(to, text), "_blank", "noopener");
   }
   function messageFor(el) {
     const kind = el.dataset.wa;
-    if (kind === "peca") return msg.piece(el.dataset.code);
+    // Pedido de peça ou gema: a mensagem sai do detalhe aberto (metal e pedra escolhidos ali).
+    if ((kind === "peca" || kind === "gema") && SS.catalog) return SS.catalog.orderMessage(el);
     if (kind === "servico") return msg.service(el.dataset.name);
     return msg.general();
   }
@@ -79,7 +81,8 @@
     const el = e.target.closest("[data-wa]");
     if (!el) return;
     e.preventDefault();
-    openWhatsApp(messageFor(el));
+    const text = messageFor(el);
+    if (text) openWhatsApp(text, el.dataset.wa); // sem texto: falta uma escolha, e quem pediu já avisou
   });
 
   /* ---------- Contato a partir da configuração ---------- */
@@ -152,8 +155,9 @@
   function scrollToHash(hash) {
     const target = hash === "#inicio" ? document.body : document.querySelector(hash);
     if (!target) return;
-    const offset = hash === "#inicio" ? 0 : -topbar.offsetHeight + 1;
-    if (lenis) lenis.scrollTo(target, { offset, duration: 1.0 });
+    // Sem offset: o Lenis e o scrollIntoView já descontam o topo fixo pelo scroll-padding-top
+    // do CSS (somar a altura do topo aqui fazia a seção parar ~75 px abaixo do lugar).
+    if (lenis) lenis.scrollTo(target, { duration: 1.0 });
     else if (hash === "#inicio") window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
     else target.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
     history.replaceState(null, "", hash);
@@ -171,12 +175,14 @@
   const heroEnd = document.getElementById("hero-end");
   const waFloat = document.querySelector(".wa-float");
   const contato = document.getElementById("contato");
-  let pastHero = false, atContact = false;
+  // Página sem hero (joalheria): topo sólido e botão fixo desde o início.
+  let pastHero = !heroEnd, atContact = false;
   const syncChrome = () => {
     topbar.classList.toggle("is-solid", pastHero);
     waFloat.classList.toggle("is-on", pastHero && !atContact);
   };
-  if ("IntersectionObserver" in window) {
+  syncChrome();
+  if ("IntersectionObserver" in window && heroEnd && contato) {
     new IntersectionObserver(([en]) => {
       pastHero = !en.isIntersecting && en.boundingClientRect.top < topbar.offsetHeight;
       syncChrome();
@@ -200,11 +206,11 @@
   /* ---------- Mídia da hero: vídeo quando dá, poster quando não ---------- */
   const hero = document.querySelector(".hero");
   const heroMedia = {
-    video: hero.querySelector(".hero-video"),
-    poster: hero.querySelector(".hero-poster"),
+    video: hero && hero.querySelector(".hero-video"),
+    poster: hero && hero.querySelector(".hero-poster"),
     started: false,
     start() {
-      if (this.started) return;
+      if (this.started || !hero) return;
       this.started = true;
       const { video, poster } = this;
       const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;

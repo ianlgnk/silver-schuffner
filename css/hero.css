@@ -72,10 +72,10 @@ html[data-intro="full"] .intro, html[data-intro="calm"] .intro { display: block;
   background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.95) 50%, transparent 62%);
   transform: translateX(-66.667%);
 }
-.intro.logo-on .intro-logo { opacity: 1; transform: translate(-50%, 0); transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out); }
-.intro.logo-on .intro-sweep { opacity: 0.9; transition: opacity 200ms var(--ease-out) 250ms; }
-.intro.logo-on .intro-sweep::before { transform: translateX(0); transition: transform 1100ms var(--ease-in-out) 250ms; }
-.intro.logo-off .intro-logo { opacity: 0; transform: translate(-50%, -8px) scale(0.98); transition: opacity 350ms var(--ease-out), transform 350ms var(--ease-out); }
+.intro.logo-on .intro-logo { opacity: 1; transform: translate(-50%, 0); transition: opacity 450ms var(--ease-out), transform 600ms var(--ease-out); }
+.intro.logo-on .intro-sweep { opacity: 0.9; transition: opacity 150ms var(--ease-out) 120ms; }
+.intro.logo-on .intro-sweep::before { transform: translateX(0); transition: transform 700ms var(--ease-in-out) 120ms; }
+.intro.logo-off .intro-logo { opacity: 0; transform: translate(-50%, -8px) scale(0.98); transition: opacity 250ms var(--ease-out), transform 250ms var(--ease-out); }
 
 /* Texto e topo esperam a abertura; sem JS, ficam visíveis. */
 .hero .ln { overflow: hidden; padding: 0 0.12em 0.1em 0; margin-bottom: -0.1em; }

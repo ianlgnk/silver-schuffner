@@ -136,25 +136,26 @@
   const once = {};
   const at = (key, fn) => { if (!once[key]) { once[key] = 1; fn(); } };
 
+  // Abertura enxuta (~2,6 s): a estrela salta, pisca duas vezes, junta força e abre a tela.
   function full(t) {
     let s = 0, r = -35, fo = 1, so = 1;
-    if (t < 2300) {
-      const tw = Math.sin(seg(t, 900, 2300) * Math.PI * 3) * 0.07 * (1 - seg(t, 900, 2300));
-      s = base * (outBack(seg(t, 300, 900)) + tw);
-      r = -35 + 35 * outCubic(seg(t, 300, 1100)) + 6 * Math.sin(seg(t, 900, 2300) * Math.PI);
-    } else if (t < 2750) {
-      s = base * (1 - 0.22 * inOut(seg(t, 2300, 2750)));
+    if (t < 1350) {
+      const tw = Math.sin(seg(t, 500, 1350) * Math.PI * 2) * 0.07 * (1 - seg(t, 500, 1350));
+      s = base * (outBack(seg(t, 120, 500)) + tw);
+      r = -35 + 35 * outCubic(seg(t, 120, 650)) + 6 * Math.sin(seg(t, 500, 1350) * Math.PI);
+    } else if (t < 1650) {
+      s = base * (1 - 0.22 * inOut(seg(t, 1350, 1650)));
       r = 0;
     } else {
-      s = base * 0.78 + (cover - base * 0.78) * inOutExpo(seg(t, 2750, 4050));
-      r = 45 * inOut(seg(t, 2750, 4050));
-      fo = 1 - outCubic(seg(t, 2800, 3350));
-      so = 1 - seg(t, 3300, 4000);
+      s = base * 0.78 + (cover - base * 0.78) * inOutExpo(seg(t, 1650, 2550));
+      r = 45 * inOut(seg(t, 1650, 2550));
+      fo = 1 - outCubic(seg(t, 1690, 2050));
+      so = 1 - seg(t, 2000, 2500);
     }
-    if (t >= 1000) at("logo-on", () => intro.classList.add("logo-on"));
-    if (t >= 2300) at("logo-off", () => { intro.classList.remove("logo-on"); intro.classList.add("logo-off"); });
-    if (t >= 3850) at("ready", ready);
-    return { s, r, fo, so, end: t >= 4100 };
+    if (t >= 450) at("logo-on", () => intro.classList.add("logo-on"));
+    if (t >= 1350) at("logo-off", () => { intro.classList.remove("logo-on"); intro.classList.add("logo-off"); });
+    if (t >= 2400) at("ready", ready);
+    return { s, r, fo, so, end: t >= 2600 };
   }
 
   const timeline = full;
