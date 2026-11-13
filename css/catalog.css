@@ -186,6 +186,7 @@ html.reveals .grid.is-settled .item { opacity: 1; transform: none; transition: n
 }
 .catalog-more-count { font-family: var(--font-display); font-style: italic; font-size: clamp(20px, 2vw, 24px); color: var(--fg-soft); }
 .catalog-more .btn { min-width: min(100%, 320px); }
+.catalog-moldes { display: inline-flex; align-items: center; min-height: 44px; color: var(--fg-soft); font-size: 14px; text-decoration-color: var(--silver-dim); text-underline-offset: 4px; }
 .catalog-more .btn .icon { transition: transform 200ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .catalog-more .btn:hover .icon { transform: translateX(4px); }
@@ -220,4 +221,34 @@ html.reveals .grid.is-settled .item { opacity: 1; transform: none; transition: n
   .piece[open] { transition: opacity 200ms ease; transform: none; }
   @starting-style { .piece[open] { transform: none; } }
   .plate img { transition: none; }
+}
+
+/* ---------- Moldes (página da joalheria) ----------
+ * Texto e botão de download à esquerda; à direita, três páginas do PDF em leque,
+ * como folhas soltas sobre a mesa. */
+.moldes-grid { display: grid; gap: clamp(48px, 7vw, 96px); }
+.moldes-text .lede { margin-top: 24px; max-width: 44ch; }
+.moldes-steps { counter-reset: passo; display: grid; gap: 12px; margin-top: 32px; padding: 0; list-style: none; }
+.moldes-steps li { counter-increment: passo; display: grid; grid-template-columns: 28px 1fr; gap: 12px; color: var(--fg-soft); }
+.moldes-steps li::before { content: counter(passo); font-family: var(--font-display); font-style: italic; font-size: 22px; line-height: 1.1; color: var(--silver); }
+.moldes-actions { display: grid; gap: 12px; justify-items: start; margin-top: 36px; }
+.moldes-actions .fine { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.moldes-preview { position: relative; aspect-ratio: 1; width: min(100%, 520px); justify-self: center; }
+.moldes-preview img {
+  position: absolute; width: 74%; height: auto; aspect-ratio: 1; border-radius: 3px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 6px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 600ms var(--ease-out);
+}
+.moldes-preview img:nth-child(1) { left: 0; top: 8%; transform: rotate(-7deg); }
+.moldes-preview img:nth-child(2) { right: 0; top: 4%; transform: rotate(6deg); }
+.moldes-preview img:nth-child(3) { left: 13%; top: 16%; transform: rotate(-1deg); }
+@media (hover: hover) and (pointer: fine) {
+  .moldes-preview:hover img:nth-child(1) { transform: rotate(-10deg) translate(-12px, 4px); }
+  .moldes-preview:hover img:nth-child(2) { transform: rotate(9deg) translate(12px, 0); }
+}
+@media (min-width: 900px) {
+  .moldes-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .moldes-preview img { transition: none; }
 }

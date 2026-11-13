@@ -1,10 +1,10 @@
-/* Joalheria: grade de peças, filtros, busca e detalhe com o pedido (metal e pedra).
- * Na home (#grid[data-list="destaques"]) mostra só a seleção de fotos do ateliê;
- * na página da joalheria (#grid[data-list="joalheria"]) mostra tudo, em dois grupos. */
+/* Joalheria: grade de peças do ateliê, filtros, busca e detalhe com o pedido (metal e pedra).
+ * Na home (#grid[data-list="destaques"]) mostra só a seleção; na página da joalheria
+ * (#grid[data-list="joalheria"]) mostra todas. Os moldes ficam no PDF da seção Moldes. */
 (function () {
   "use strict";
   const SS = window.SS;
-  const { stones, fmt, pieceImage, photoImage, igUrl, matches, msg } = SS.lib;
+  const { photoImage, igUrl, matches, msg } = SS.lib;
   const TYPES = SS.TYPES;
   const SINGULAR = { aneis: "Anel", aliancas: "Aliança", brincos: "Brinco", colares: "Colar", pingentes: "Pingente", conjuntos: "Conjunto", gemas: "Gema" };
   const ESCOLHA = "Pedras à escolha";
@@ -14,12 +14,10 @@
   if (!grid || !dialog) return;
   const isFull = grid.dataset.list === "joalheria";
 
-  const photos = SS.PHOTOS.map(p => ({ ...p, kind: "foto", key: `f-${p.id}`, v: p.p.length, h: 1 }));
-  const models = SS.PIECES.map(p => ({ ...p, kind: "molde", key: `m-${p.c}` }));
-  const all = [...photos, ...models];
+  const all = SS.PHOTOS.map(p => ({ ...p, kind: "foto", key: `f-${p.id}`, v: p.p.length, h: 1 }));
   const byKey = Object.fromEntries(all.map(i => [i.key, i]));
-  const imageOf = (i, n) => i.kind === "foto" ? photoImage(i.p[n - 1]) : pieceImage(i, n);
-  const searchText = i => [i.n, TYPES[i.t], SINGULAR[i.t], i.g, i.m, i.c, i.kind === "foto" ? "foto ateliê instagram" : "modelo catálogo encomenda"].join(" ");
+  const imageOf = (i, n) => photoImage(i.p[n - 1]);
+  const searchText = i => [i.n, TYPES[i.t], SINGULAR[i.t], i.g, i.m, "foto ateliê instagram"].join(" ");
 
   const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   const canTransition = () => typeof document.startViewTransition === "function" && !reduced();
@@ -34,8 +32,7 @@
 
   /* ---------- Grade ---------- */
   function itemHTML(i) {
-    if (i.kind === "foto") {
-      return `
+    return `
     <button type="button" class="item" data-key="${i.key}" data-type="${i.t}" aria-label="${i.n}">
       <span class="plate is-photo">
         <img src="${imageOf(i, 1)}" alt="" loading="lazy" decoding="async">
@@ -46,32 +43,12 @@
         <span class="item-meta">${SINGULAR[i.t]}${i.g ? ` · ${i.g}` : ""}</span>
       </span>
     </button>`;
-    }
-    return `
-    <button type="button" class="item" data-key="${i.key}" data-type="${i.t}" aria-label="${i.n}, código ${i.c}">
-      <span class="plate">
-        <img src="${imageOf(i, i.h)}" alt="" loading="lazy" decoding="async">
-        ${i.v > 1 ? `<span class="chip">${i.v} cores</span>` : ""}
-      </span>
-      <span>
-        <span class="item-name">${i.n}</span>
-        <span class="item-meta">Cód. ${i.c} · ${fmt(i.w)} g</span>
-      </span>
-    </button>`;
   }
 
   if (isFull) {
-    grid.innerHTML = `
-      <div class="group" data-group="foto">
-        <div class="group-head"><h2 class="h3">Peças do ateliê</h2><p>Fotos de peças que já saíram da bancada. A sua é feita sob encomenda.</p></div>
-        <div class="grid">${photos.map(itemHTML).join("")}</div>
-      </div>
-      <div class="group" data-group="molde">
-        <div class="group-head"><h2 class="h3">Modelos para encomenda</h2><p>Imagens ilustrativas dos modelos. Peso sujeito à variação de acordo com o tamanho do aro.</p></div>
-        <div class="grid">${models.map(itemHTML).join("")}</div>
-      </div>`;
+    grid.innerHTML = `<div class="grid">${all.map(itemHTML).join("")}</div>`;
   } else {
-    grid.innerHTML = photos.filter(p => p.f).map(itemHTML).join("");
+    grid.innerHTML = all.filter(p => p.f).map(itemHTML).join("");
     // Quanto há na galeria completa, contado dos dados (não envelhece quando entra peça nova).
     const total = document.getElementById("total-pecas");
     if (total) { total.textContent = `${all.length} peças na galeria, de anéis a gemas`; total.hidden = false; }
@@ -104,7 +81,6 @@
       el.hidden = !ok;
       if (ok) shown++;
     });
-    grid.querySelectorAll(".group").forEach(g => { g.hidden = !g.querySelector(".item:not([hidden])"); });
     emptyEl.hidden = shown > 0;
     countEl.textContent = shown === 1 ? "1 peça" : `${shown} peças`;
     // Depois do primeiro filtro, as peças ficam visíveis de vez: a troca já tem a sua animação,
@@ -168,44 +144,31 @@
   function stageHTML(i) {
     const thumbs = i.v > 1
       ? `<div class="thumbs">${Array.from({ length: i.v }, (_, k) =>
-          `<button type="button" class="thumb" data-variant="${k + 1}" aria-pressed="${k + 1 === i.h}" aria-label="${i.kind === "foto" ? "Foto" : "Variação"} ${k + 1}"><img src="${imageOf(i, k + 1)}" alt=""></button>`).join("")}</div>`
+          `<button type="button" class="thumb" data-variant="${k + 1}" aria-pressed="${k + 1 === i.h}" aria-label="Foto ${k + 1}"><img src="${imageOf(i, k + 1)}" alt=""></button>`).join("")}</div>`
       : "";
     return `
-        <div class="piece-stage${i.kind === "foto" ? " is-photo" : ""}">
-          <img class="piece-photo" src="${imageOf(i, i.h)}" alt="${i.n}${i.v > 1 ? `, ${i.kind === "foto" ? "foto" : "variação"} ${i.h}` : ""}">
+        <div class="piece-stage is-photo">
+          <img class="piece-photo" src="${imageOf(i, i.h)}" alt="${i.n}${i.v > 1 ? `, foto ${i.h}` : ""}">
           ${i.v > 1 ? `
-          <button type="button" class="stage-nav is-prev" data-step="-1" aria-label="${i.kind === "foto" ? "Foto" : "Variação"} anterior"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-          <button type="button" class="stage-nav is-next" data-step="1" aria-label="Próxima ${i.kind === "foto" ? "foto" : "variação"}"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>` : ""}
+          <button type="button" class="stage-nav is-prev" data-step="-1" aria-label="Foto anterior"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <button type="button" class="stage-nav is-next" data-step="1" aria-label="Próxima foto"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>` : ""}
           ${thumbs}
         </div>`;
   }
 
   function specsHTML(i) {
-    if (i.kind === "foto") {
-      return `
+    return `
           <dl class="specs">
             <dt>Tipo</dt><dd>${SINGULAR[i.t]}</dd>
             ${i.g ? `<dt>${i.t === "gemas" ? "Gema" : "Pedras"}</dt><dd>${i.g}</dd>` : ""}
             ${i.m ? `<dt>Na foto</dt><dd>${i.m}</dd>` : ""}
           </dl>`;
-    }
-    const st = stones(i.s);
-    const stoneList = st.length
-      ? `<ul>${st.map(s => `<li><span class="q">${s.qty}×</span>${s.label}</li>`).join("")}</ul>`
-      : "Sem pedras";
-    return `
-          <dl class="specs">
-            <dt>Tipo</dt><dd>${SINGULAR[i.t]}</dd>
-            <dt>Código</dt><dd>${i.c}</dd>
-            <dt>Peso aprox.</dt><dd>${fmt(i.w)} g</dd>
-            <dt>Pedras</dt><dd>${stoneList}</dd>
-          </dl>`;
   }
 
   function orderHTML(i) {
     if (i.t === "gemas") return "";
-    const hasStone = i.kind === "foto" ? !!i.g : !!i.s;
-    const prefill = i.kind === "foto" && i.g && i.g !== ESCOLHA ? i.g : "";
+    const hasStone = !!i.g;
+    const prefill = i.g && i.g !== ESCOLHA ? i.g : "";
     return `
           <fieldset class="order">
             <legend>Como você quer a sua?</legend>
@@ -219,9 +182,7 @@
 
   function detailHTML(i) {
     const gem = i.t === "gemas";
-    const note = i.kind === "foto"
-      ? (gem ? "Gema disponível no ateliê para montar na sua joia." : "Foto de uma peça feita no ateliê. A sua é produzida sob encomenda, em prata ou ouro.")
-      : "Imagem ilustrativa do modelo. Peso sujeito à variação de acordo com o tamanho do aro.";
+    const note = gem ? "Gema disponível no ateliê para montar na sua joia." : "Foto de uma peça feita no ateliê. A sua é produzida sob encomenda, em prata ou ouro.";
     return `
       <div class="piece-in">
         <button type="button" class="icon-btn piece-close" data-close-piece aria-label="Fechar"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
@@ -255,7 +216,7 @@
       return null;
     }
     const pedra = order.querySelector("input[name=pedra]");
-    return msg.piece({ name: i.n, code: i.kind === "molde" ? i.c : "", metal: metal.value, stone: pedra ? pedra.value : "" });
+    return msg.piece({ name: i.n, metal: metal.value, stone: pedra ? pedra.value : "" });
   }
 
   function open(key) {
@@ -333,10 +294,9 @@
     const i = byKey[dialog.querySelector("[data-key]").dataset.key];
     if (!i || i.v < 2) return;
     const img = dialog.querySelector(".piece-photo");
-    const label = i.kind === "foto" ? "foto" : "variação";
     const swap = () => {
       img.src = imageOf(i, n);
-      img.alt = `${i.n}, ${label} ${n}`;
+      img.alt = `${i.n}, foto ${n}`;
     };
     dialog.querySelectorAll(".thumb").forEach(x => x.setAttribute("aria-pressed", String(Number(x.dataset.variant) === n)));
     if (!img.animate) return swap(); // só opacidade: vale também com movimento reduzido

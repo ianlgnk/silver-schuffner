@@ -29,6 +29,7 @@
   <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
 </svg>
 
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
@@ -78,11 +79,11 @@
   <section class="section page-head joalheria" aria-labelledby="joalheria-title">
     <div class="wrap">
       <h1 class="display-2" id="joalheria-title">Joalheria</h1>
-      <p class="lede">Anéis, alianças, brincos, colares, pingentes, conjuntos e gemas. Escolha uma peça e peça a sua em prata ou ouro, com a pedra que quiser.</p>
+      <p class="lede">Peças que já saíram da bancada do ateliê. Escolha uma e peça a sua em prata ou ouro, com a pedra que quiser. Procurando outro modelo? Veja o <a href="#moldes">catálogo de moldes</a>.</p>
       <div class="tools">
         <form class="search" role="search" action="joalheria.html">
           <label class="sr-only" for="busca">Buscar na joalheria</label>
-          <input type="search" id="busca" name="busca" placeholder="Buscar por peça, pedra ou código" autocomplete="off" enterkeyhint="search">
+          <input type="search" id="busca" name="busca" placeholder="Buscar por peça ou pedra" autocomplete="off" enterkeyhint="search">
         </form>
         <div class="filters" id="filters" role="group" aria-label="Filtrar por tipo"></div>
         <p class="count" id="contagem" aria-live="polite"></p>
@@ -91,6 +92,29 @@
       <div class="empty" id="vazio" hidden>
         <p>Nenhuma peça encontrada.</p>
         <button class="btn btn-ghost btn-sm" type="button" id="limpar">Limpar busca e filtros</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section moldes" id="moldes" aria-labelledby="moldes-title">
+    <div class="wrap moldes-grid">
+      <div class="moldes-text">
+        <h2 class="h2" id="moldes-title"><span class="ln"><span>Catálogo</span></span> <span class="ln"><span>de <em>moldes</em></span></span></h2>
+        <p class="lede">Mais de 3.600 modelos de anéis, alianças, brincos, colares e pingentes para encomendar em prata ou ouro, com a pedra que você escolher.</p>
+        <ol class="moldes-steps">
+          <li>Baixe o catálogo e escolha o modelo.</li>
+          <li>Anote o código que aparece embaixo da foto.</li>
+          <li>Mande o código, o metal, a pedra e o tamanho no WhatsApp.</li>
+        </ol>
+        <div class="moldes-actions">
+          <a class="btn btn-lg" href="moldes/catalogo-de-moldes-silver-schuffner.pdf" download>Baixar catálogo de moldes<svg class="icon" aria-hidden="true"><use href="#i-download"/></svg></a>
+          <p class="fine">PDF · 188 páginas · 37 MB</p>
+        </div>
+      </div>
+      <div class="moldes-preview" aria-hidden="true">
+        <img src="moldes/previa-2.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+        <img src="moldes/previa-3.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+        <img src="moldes/previa-1.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
       </div>
     </div>
   </section>

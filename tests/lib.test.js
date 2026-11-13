@@ -7,7 +7,7 @@ const vm = require("node:vm");
 
 const ROOT = path.join(__dirname, "..");
 const lib = require("../js/lib.js");
-const { fmt, stones, waUrl, waNumber, msg, introMode, pieceImage, photoImage, igUrl, matches } = lib;
+const { waUrl, waNumber, msg, introMode, photoImage, igUrl, matches } = lib;
 
 function loadData() {
   const ctx = { window: {} };
@@ -15,18 +15,6 @@ function loadData() {
   // JSON tira os protótipos do outro contexto do vm, para o deepEqual estrito comparar só os valores
   return JSON.parse(JSON.stringify(ctx.window.SS));
 }
-
-test("stones converte a notação do catálogo", () => {
-  assert.deepEqual(stones("7x7 Ø1.75/16"), [{ qty: 1, label: "7 × 7 mm" }, { qty: 16, label: "Ø 1,75 mm" }]);
-  assert.deepEqual(stones("Ø3 Ø2.75/3"), [{ qty: 1, label: "Ø 3 mm" }, { qty: 3, label: "Ø 2,75 mm" }]);
-  assert.deepEqual(stones("5x7/1 5x7/2"), [{ qty: 1, label: "5 × 7 mm" }, { qty: 2, label: "5 × 7 mm" }]);
-  assert.deepEqual(stones(""), []);
-});
-
-test("fmt troca ponto por vírgula", () => {
-  assert.equal(fmt("9.3"), "9,3");
-  assert.equal(fmt(2), "2");
-});
 
 test("mensagens exatas", () => {
   assert.equal(msg.piece({ name: "Anel Imperial", code: "0413", metal: "Ouro", stone: "Esmeralda" }),
@@ -59,24 +47,10 @@ test("sem memória de visita: nada de versão curta nem armazenamento", () => {
   assert.equal(lib.INTRO_MEMORY_MS, undefined);
 });
 
-test("pieceImage monta o caminho", () => {
-  assert.equal(pieceImage({ c: "0413" }, 4), "img/0413_4.webp");
-});
-
-test("dados: 23 peças, tipos e imagens existentes", () => {
+test("dados: tipos da joalheria", () => {
   const SS = loadData();
-  assert.deepEqual(Object.keys(SS.TYPES), ["aneis", "aliancas", "brincos", "colares", "pingentes", "conjuntos", "gemas"]);
-  assert.equal(SS.PIECES.length, 23);
-  const count = t => SS.PIECES.filter(p => p.t === t).length;
-  assert.equal(count("aneis"), 12);
-  assert.equal(count("brincos"), 8);
-  assert.equal(count("colares"), 3);
-  for (const p of SS.PIECES) {
-    assert.ok(p.h >= 1 && p.h <= p.v, `${p.c}: destaque ${p.h} fora de 1..${p.v}`);
-    for (let i = 1; i <= p.v; i++) {
-      assert.ok(fs.existsSync(path.join(ROOT, `img/${p.c}_${i}.webp`)), `falta img/${p.c}_${i}.webp`);
-    }
-  }
+  assert.deepEqual(Object.keys(SS.TYPES), ["aneis", "aliancas", "colares", "pingentes", "conjuntos", "gemas"]);
+  assert.equal(SS.PIECES, undefined, "os moldes moram no PDF, não nos dados");
 });
 
 test("fotos do ateliê: tipos válidos, imagens existentes e 8 na home", () => {
@@ -91,7 +65,7 @@ test("fotos do ateliê: tipos válidos, imagens existentes e 8 na home", () => {
   }
   assert.equal(SS.PHOTOS.filter(p => p.f).length, 8);
   for (const t of Object.keys(SS.TYPES)) {
-    const n = SS.PHOTOS.filter(p => p.t === t).length + SS.PIECES.filter(p => p.t === t).length;
+    const n = SS.PHOTOS.filter(p => p.t === t).length;
     assert.ok(n > 0, `tipo ${t} sem peças`);
   }
 });

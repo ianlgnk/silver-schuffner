@@ -6,21 +6,6 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
-  const fmt = n => String(n).replace(".", ",");
-
-  /* "7x7 Ø1.75/16" → [{ qty: 1, label: "7 × 7 mm" }, { qty: 16, label: "Ø 1,75 mm" }] */
-  function stones(spec) {
-    if (!spec) return [];
-    return spec.replace(/Ø\s+/g, "Ø").split(/\s+/).filter(Boolean).map(tok => {
-      const [dim, q] = tok.split("/");
-      const qty = q ? parseInt(q, 10) : 1;
-      const round = dim.startsWith("Ø");
-      const size = dim.replace("Ø", "");
-      const label = round ? `Ø ${fmt(size)} mm` : `${size.split("x").map(fmt).join(" × ")} mm`;
-      return { qty, label };
-    });
-  }
-
   const waUrl = (number, text) => `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
   // Pedido de gema vai para quem cuida das gemas (Thayna); o resto, e a falta dela, para o Esteves.
   const digits = s => String(s || "").replace(/\D/g, "");
@@ -53,9 +38,8 @@
     return reduced ? "calm" : "full";
   }
 
-  const pieceImage = (piece, i) => `img/${piece.c}_${i}.webp`;
   const photoImage = name => `img/ig/${name}.webp`;
   const igUrl = code => `https://www.instagram.com/p/${code}/`;
 
-  return { fmt, stones, waUrl, waNumber, msg, introMode, pieceImage, photoImage, igUrl, fold, matches };
+  return { waUrl, waNumber, msg, introMode, photoImage, igUrl, fold, matches };
 });

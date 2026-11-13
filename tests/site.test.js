@@ -211,7 +211,7 @@ test("joalheria: página própria com busca, filtros e grade completa", () => {
 test("joalheria: menu leva às seções da home e marca a página atual", () => {
   for (const id of ["historia", "servicos", "depoimentos", "contato"]) assert.match(joia, new RegExp(`href="index\\.html#${id}"`));
   assert.match(joia, /<a href="joalheria\.html" aria-current="page">Joalheria<\/a>/);
-  assert.doesNotMatch(joia, /<a [^>]*href="#(?!conteudo)/);
+  assert.doesNotMatch(joia, /<a [^>]*href="#(?!conteudo|moldes)/);
 });
 
 test("home: seleção de fotos e link para a joalheria", () => {
@@ -237,4 +237,14 @@ test("pedido de peça pede metal; gema vai sem metal", () => {
   assert.match(c, /name="pedra"/);
   assert.match(c, /if \(i\.t === "gemas"\) return msg\.gem/);
   assert.match(read("js/ui.js"), /SS\.catalog\.orderMessage\(el\)/);
+});
+
+test("joalheria: seção de moldes com o PDF para baixar", () => {
+  const joia = read("joalheria.html");
+  const moldes = joia.slice(joia.indexOf('id="moldes"'));
+  assert.match(moldes, /href="moldes\/catalogo-de-moldes-silver-schuffner\.pdf" download/);
+  assert.doesNotMatch(joia, /__[A-Z]+__/, "marcadores de número não preenchidos");
+  assert.ok(fs.existsSync(path.join(ROOT, "moldes/catalogo-de-moldes-silver-schuffner.pdf")));
+  assert.doesNotMatch(joia, /Joias Express|exclusiv/i);
+  assert.match(read("index.html"), /href="joalheria\.html#moldes"/);
 });
