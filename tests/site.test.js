@@ -165,11 +165,12 @@ test("rolagem dos links do menu no computador dura 1 s", () => {
 });
 
 /* ---------- Auditoria impeccable ---------- */
-test("imagens em WebP: nenhum PNG referenciado nem sobrando em img/", () => {
-  const all = html + ["base.css", "hero.css", "catalog.css", "sections.css", "tokens.css"].map(css).join("") +
-    ["lib.js", "ui.js", "catalog.js", "intro.js", "data.js"].map(js).join("");
+test("imagens em WebP: nenhum PNG referenciado nem sobrando em img/ (só o ícone do iPhone)", () => {
+  // O iOS só aceita PNG no apple-touch-icon; é a única exceção.
+  const all = (html + ["base.css", "hero.css", "catalog.css", "sections.css", "tokens.css"].map(css).join("") +
+    ["lib.js", "ui.js", "catalog.js", "intro.js", "data.js"].map(js).join("")).replace(/img\/apple-touch-icon\.png/g, "");
   assert.doesNotMatch(all, /\.png\b/);
-  assert.deepEqual(fs.readdirSync(path.join(ROOT, "img")).filter(f => f.endsWith(".png")), []);
+  assert.deepEqual(fs.readdirSync(path.join(ROOT, "img")).filter(f => f.endsWith(".png")), ["apple-touch-icon.png"]);
 });
 
 test("vídeo da hero em paisagem leve (até 1,6 MB)", () => {
@@ -247,4 +248,15 @@ test("joalheria: seção de moldes com o PDF para baixar", () => {
   assert.ok(fs.existsSync(path.join(ROOT, "moldes/catalogo-de-moldes-silver-schuffner.pdf")));
   assert.doesNotMatch(joia, /Joias Express|exclusiv/i);
   assert.match(read("index.html"), /href="joalheria\.html#moldes"/);
+});
+
+test("prévia de link: imagem com endereço completo e tags de compartilhamento", () => {
+  for (const f of ["index.html", "joalheria.html"]) {
+    const head = read(f).split("</head>")[0];
+    assert.match(head, /property="og:image" content="https:\/\/[^"]+\/img\/og-silver-schuffner\.jpg"/, f);
+    for (const tag of ["og:url", "og:site_name", "og:locale", "og:image:width", "og:image:alt"]) assert.match(head, new RegExp(`property="${tag}"`), `${f}: falta ${tag}`);
+    assert.match(head, /name="twitter:card" content="summary_large_image"/, f);
+    assert.match(head, /rel="apple-touch-icon"/, f);
+  }
+  assert.ok(fs.existsSync(path.join(ROOT, "img/og-silver-schuffner.jpg")));
 });
